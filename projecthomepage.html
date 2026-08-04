@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articul8 | The GenAI platform that simply works.</title>
+    <meta name="description"
+        content="Domain-Specific GenAI Platform purpose-built for your data and mission. From data chaos to hyper-personalized GenAI enterprise outcomes." />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Articul8" />
+    <meta property="og:title" content="Articul8 | Domain-Specific GenAI Platform" />
+    <meta property="og:description" content="From data chaos to hyper-personalized GenAI enterprise outcomes." />
+    <meta property="og:url" content="https://www.articul8.ai/" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================================
+   Articul8 — Home page recreation (dev-handover reference)
+   Faithful rebuild of the current live homepage.
+   Single-file, responsive. Design tokens up top so the
+   dev team can lift them straight into the Next.js theme.
+   Content sourced from the live site (Oct 2026 crawl).
+   ========================================================= */
+
+        :root {
+            --blue: #2A27E6;
+            /* primary brand blue (headings, logo, links) */
+            --blue-deep: #1E1BB8;
+            --orange: #F26A2C;
+            /* accent (the "8" swirl, highlights) */
+            --mint: #E4F7EE;
+            /* hero announcement banner */
+            --ink: #0C1024;
+            /* near-black text */
+            --body: #4A5468;
+            /* muted body text */
+            --line: #E7E9F2;
+            /* hairline borders */
+            --surface: #F6F7FB;
+            /* light section fill */
+            --card: #FFFFFF;
+            --white: #FFFFFF;
+            --display: 'Poppins', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --maxw: 1200px;
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sans);
+            color: var(--ink);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--display);
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+        }
+
+        /* ---------- NAV ---------- */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: saturate(160%) blur(10px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-inner {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .brand {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: 26px;
+            color: var(--blue);
+            letter-spacing: -0.03em;
+        }
+
+        .brand .eight {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            margin-left: 12px;
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ink);
+            opacity: 0.85;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+            opacity: 1;
+        }
+
+        .nav-spacer {
+            flex: 1;
+        }
+
+        .nav-cta {
+            background: var(--blue);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            transition: background .15s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--blue-deep);
+        }
+
+        .nav-burger {
+            display: none;
+            font-size: 26px;
+            color: var(--ink);
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            padding: 64px 0 40px;
+            text-align: center;
+        }
+
+        .announce {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            justify-content: center;
+            background: var(--mint);
+            border-radius: 14px;
+            padding: 16px 22px;
+            max-width: 1000px;
+            margin: 0 auto 56px;
+            font-size: 16px;
+            color: var(--ink);
+        }
+
+        .announce .tag {
+            background: #0C1024;
+            color: #fff;
+            font-family: var(--display);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            padding: 6px 12px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 6vw, 72px);
+            font-weight: 700;
+            color: var(--blue);
+            max-width: 980px;
+            margin: 0 auto 24px;
+        }
+
+        .hero-sub {
+            font-size: clamp(18px, 2vw, 24px);
+            color: var(--body);
+            max-width: 640px;
+            margin: 0 auto 40px;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 1.5px solid var(--blue);
+            color: var(--blue);
+            font-family: var(--display);
+            font-weight: 600;
+            font-size: 17px;
+            padding: 16px 34px;
+            border-radius: 12px;
+            transition: all .15s ease;
+        }
+
+        .btn-outline:hover {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .btn-solid {
+            display: inline-block;
+            background: var(--blue);
+            color: #fff;
+            font-family: var(--display);
+            font-weight: 600;
+            font-size: 17px;
+            padding: 16px 34px;
+            border-radius: 12px;
+            transition: background .15s ease;
+        }
+
+        .btn-solid:hover {
+            background: var(--blue-deep);
+        }
+
+        /* ---------- TRUSTED LOGOS ---------- */
+        .trusted {
+            padding: 48px 0 20px;
+            text-align: center;
+        }
+
+        .trusted-label {
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--body);
+            margin-bottom: 28px;
+        }
+
+        .logo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.6;
+        }
+
+        .logo-chip {
+            font-family: var(--display);
+            font-weight: 700;
+            font-size: 20px;
+            color: #7A8399;
+        }
+
+        /* ---------- SECTION SCAFFOLD ---------- */
+        .section {
+            padding: 88px 0;
+        }
+
+        .section.tint {
+            background: var(--surface);
+        }
+
+        .sec-eyebrow {
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 16px;
+        }
+
+        .sec-title {
+            font-size: clamp(30px, 3.6vw, 46px);
+            font-weight: 700;
+            color: var(--ink);
+            max-width: 880px;
+        }
+
+        .sec-lead {
+            font-size: 18px;
+            color: var(--body);
+            max-width: 720px;
+            margin-top: 18px;
+        }
+
+        .sec-head {
+            margin-bottom: 48px;
+        }
+
+        /* ---------- PILLARS ---------- */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .pillar {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+        }
+
+        .pillar-ico {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(42, 39, 230, 0.08);
+            display: grid;
+            place-items: center;
+            color: var(--blue);
+            margin-bottom: 18px;
+            font-size: 22px;
+        }
+
+        .pillar h3 {
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .pillar p {
+            font-size: 14.5px;
+            color: var(--body);
+        }
+
+        /* ---------- PLATFORM BAND ---------- */
+        .band {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+            border-radius: 24px;
+            padding: 56px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .band h2 {
+            font-size: clamp(28px, 3.4vw, 42px);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .band p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.86);
+            max-width: 720px;
+            margin: 0 auto 32px;
+        }
+
+        .band .btn-solid {
+            background: #fff;
+            color: var(--blue);
+        }
+
+        .band .btn-solid:hover {
+            background: var(--mint);
+        }
+
+        .soc2 {
+            margin-top: 28px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .soc2 .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6BE3A6;
+        }
+
+        /* ---------- POWERS (3 cards) ---------- */
+        .powers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .power {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 30px 26px;
+            background: var(--card);
+        }
+
+        .power h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 10px;
+        }
+
+        .power p {
+            font-size: 15px;
+            color: var(--body);
+        }
+
+        /* ---------- DSM CARDS ---------- */
+        .dsm-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .dsm {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 30px;
+            background: var(--card);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .dsm-name {
+            font-family: var(--display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .dsm-name .a8 {
+            color: var(--orange);
+        }
+
+        .dsm-desc {
+            font-size: 15px;
+            color: var(--body);
+        }
+
+        .dsm-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 6px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
+
+        .metric .big {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--blue);
+            line-height: 1.1;
+        }
+
+        .metric .cap {
+            font-size: 12.5px;
+            color: var(--body);
+            margin-top: 6px;
+        }
+
+        .dsm-link {
+            font-family: var(--display);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--blue);
+        }
+
+        .dsm-link:hover {
+            color: var(--orange);
+        }
+
+        .dsm-note {
+            text-align: center;
+            color: var(--body);
+            font-size: 15px;
+            max-width: 760px;
+            margin: 36px auto 0;
+        }
+
+        /* ---------- MARKETPLACE ---------- */
+        .market {
+            text-align: center;
+        }
+
+        .market .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 32px;
+        }
+
+        .market .chip {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 16px 28px;
+            font-family: var(--display);
+            font-weight: 600;
+            color: var(--ink);
+            background: var(--card);
+            font-size: 16px;
+        }
+
+        /* ---------- CEO FEATURE ---------- */
+        .feature {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .feature .media {
+            background: linear-gradient(135deg, #0C1024, #23234a);
+            border-radius: 20px;
+            aspect-ratio: 16/10;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature .play {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            display: grid;
+            place-items: center;
+        }
+
+        .feature .play::after {
+            content: "";
+            border-left: 22px solid #fff;
+            border-top: 13px solid transparent;
+            border-bottom: 13px solid transparent;
+            margin-left: 6px;
+        }
+
+        .feature h2 {
+            font-size: clamp(26px, 3vw, 38px);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .feature p {
+            color: var(--body);
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+
+        /* ---------- NEWS ---------- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-top: 12px;
+        }
+
+        .news-card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--card);
+        }
+
+        .news-thumb {
+            height: 150px;
+            background: linear-gradient(135deg, #C9D0F5, #E9ECFA);
+        }
+
+        .news-card:nth-child(2) .news-thumb {
+            background: linear-gradient(135deg, #FAD9C6, #FBEDE2);
+        }
+
+        .news-body {
+            padding: 24px 26px 28px;
+        }
+
+        .news-body h3 {
+            font-family: var(--display);
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .news-body p {
+            font-size: 14.5px;
+            color: var(--body);
+            margin-bottom: 16px;
+        }
+
+        /* ---------- FINAL CTA ---------- */
+        .final {
+            text-align: center;
+            background: var(--ink);
+            color: #fff;
+            border-radius: 24px;
+            padding: 72px 40px;
+        }
+
+        .final h2 {
+            font-size: clamp(30px, 4vw, 52px);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .final h2 .lime {
+            color: var(--orange);
+        }
+
+        .final p {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        .final .btn-solid {
+            background: var(--orange);
+            color: #fff;
+        }
+
+        .final .btn-solid:hover {
+            background: #d9581f;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            border-top: 1px solid var(--line);
+            padding: 56px 0 40px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-cols {
+            display: flex;
+            gap: 64px;
+            flex-wrap: wrap;
+        }
+
+        .footer-col h4 {
+            font-family: var(--display);
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--body);
+            margin-bottom: 16px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 15px;
+            color: var(--ink);
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: var(--blue);
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom .muted {
+            font-size: 13px;
+            color: var(--body);
+        }
+
+        .social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social a {
+            font-family: var(--display);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--body);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 960px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-burger {
+                display: block;
+            }
+
+            .wrap {
+                padding: 0 22px;
+            }
+
+            .pillars {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .powers {
+                grid-template-columns: 1fr;
+            }
+
+            .dsm-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .band {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .announce {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .footer-cols {
+                gap: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <header class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="#">Articul<span class="eight">8</span></a>
+            <nav class="nav-links">
+                <a href="#platform">Product</a>
+                <a href="#news">Case Studies</a>
+                <a href="#">Company</a>
+            </nav>
+            <div class="nav-spacer"></div>
+            <a class="nav-cta" href="#cta">Start Articul8'ing</a>
+            <button class="nav-burger" aria-label="Menu">&#9776;</button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="wrap">
+            <div class="announce">
+                <span class="tag">NEW</span>
+                <span>Gartner Names Articul8 a Tech Innovator in Domain-Specific AI for Manufacturing and Energy.</span>
+            </div>
+            <h1>Domain-Specific GenAI Platform Purpose-Built for Your Data and Mission</h1>
+            <p class="hero-sub">From data chaos to hyper-personalized GenAI enterprise outcomes.</p>
+            <a class="btn-outline" href="#platform">Explore Platform</a>
+        </div>
+    </section>
+
+    <!-- TRUSTED -->
+    <section class="trusted">
+        <div class="wrap">
+            <div class="trusted-label">Trusted by Industry Leaders</div>
+            <div class="logo-row">
+                <span class="logo-chip">Intel</span>
+                <span class="logo-chip">EPRI</span>
+                <span class="logo-chip">AWS</span>
+                <span class="logo-chip">Microsoft</span>
+                <span class="logo-chip">Google Cloud</span>
+                <span class="logo-chip">Databricks</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUILT FOR WHAT MATTERS -->
+    <section class="section">
+        <div class="wrap">
+            <div class="sec-head">
+                <div class="sec-eyebrow">Built for What Matters</div>
+                <h2 class="sec-title">Complex Enterprise Missions, Autonomously Executed with Trusted, Personalized
+                    Outcomes</h2>
+            </div>
+            <div class="pillars">
+                <div class="pillar">
+                    <div class="pillar-ico">&#9683;</div>
+                    <h3>Agent of Agents</h3>
+                    <p>Autonomous, intelligent collaboration across agents and models.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-ico">&#9635;</div>
+                    <h3>Domain-Specific Models</h3>
+                    <p>Tailored intelligence for your industry.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-ico">&#10003;</div>
+                    <h3>Trust Every Decision</h3>
+                    <p>Observability, auditability, and traceability at every step.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-ico">&#9737;</div>
+                    <h3>Hyper-Personalization</h3>
+                    <p>Model creation begins instantly at ingestion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLATFORM BAND -->
+    <section class="section" id="platform" style="padding-top:0;">
+        <div class="wrap">
+            <div class="band">
+                <h2>The Articul8 Platform Delivers Trusted AI Outcomes</h2>
+                <p>Not just outputs. Built for enterprise scale, designed for regulated industries, and optimized for
+                    accuracy, explainability, and speed.</p>
+                <a class="btn-solid" href="#">View Platform Stack</a>
+                <div class="soc2"><span class="dot"></span> SOC 2 Type II Compliance — certified security and
+                    confidentiality standards</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT POWERS THE PLATFORM -->
+    <section class="section tint">
+        <div class="wrap">
+            <div class="sec-head">
+                <div class="sec-eyebrow">What Powers the Platform</div>
+                <h2 class="sec-title">Three engines behind every trusted outcome</h2>
+            </div>
+            <div class="powers">
+                <div class="power">
+                    <h3>ModelMesh&trade;</h3>
+                    <p>Autonomous agentic reasoning engine.</p>
+                </div>
+                <div class="power">
+                    <h3>LLM-IQ&trade;</h3>
+                    <p>Model evaluation &amp; dynamic routing.</p>
+                </div>
+                <div class="power">
+                    <h3>Hyper-Personalized Agent Models</h3>
+                    <p>Developing hyper-personalized agents for enterprise users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DSM SECTION -->
+    <section class="section">
+        <div class="wrap">
+            <div class="sec-head">
+                <div class="sec-eyebrow">Domain-Specific Models</div>
+                <h2 class="sec-title">Our Domain-Specific Models (DSM) Crush GPT-5</h2>
+                <p class="sec-lead">Our growing library of domain and task specific models are delivering expert-level
+                    performance and outperforming general-purpose models across reasoning and efficiency benchmarks.</p>
+            </div>
+            <div class="dsm-grid">
+                <div class="dsm">
+                    <div class="dsm-name">A8-<span class="a8">Semicon</span></div>
+                    <div class="dsm-desc">Verilog-capable DSM for semiconductor engineering; integrates domain knowledge
+                        with reasoning for complex chip design workflows.</div>
+                    <div class="dsm-metrics">
+                        <div class="metric">
+                            <div class="big">2x Performance Boost</div>
+                            <div class="cap">over the latest open-source state-of-the-art models.</div>
+                        </div>
+                        <div class="metric">
+                            <div class="big">Matches or exceeds</div>
+                            <div class="cap">proprietary models like Google Flash 2.0 and GPT-4o, at a fraction of the
+                                compute cost.</div>
+                        </div>
+                    </div>
+                    <a class="dsm-link" href="#">Read More &rarr;</a>
+                </div>
+                <div class="dsm">
+                    <div class="dsm-name">A8-<span class="a8">Energy</span></div>
+                    <div class="dsm-desc">Developed with EPRI; trained on 10K+ specialized energy datasets to deliver
+                        context-rich, expert reasoning for energy sector challenges.</div>
+                    <div class="dsm-metrics">
+                        <div class="metric">
+                            <div class="big">96.9% Accuracy</div>
+                            <div class="cap">across 10 specialized energy topics (vs. GPT-OSS-20B's 71.3%).</div>
+                        </div>
+                        <div class="metric">
+                            <div class="big">28% more accurate</div>
+                            <div class="cap">than leading general LLMs.</div>
+                        </div>
+                    </div>
+                    <a class="dsm-link" href="#">Read More &rarr;</a>
+                </div>
+                <div class="dsm">
+                    <div class="dsm-name">A8-<span class="a8">SupplyChain</span></div>
+                    <div class="dsm-desc">Optimized for manufacturing &amp; supply chain operations; perceives and
+                        reasons over complex technical documentation without data replication.</div>
+                    <div class="dsm-metrics">
+                        <div class="metric">
+                            <div class="big">92% accuracy</div>
+                            <div class="cap">outperforming typical factor labeling baselines of 80–87%.</div>
+                        </div>
+                        <div class="metric">
+                            <div class="big">3x improvement</div>
+                            <div class="cap">in reasoning over process sequences.</div>
+                        </div>
+                    </div>
+                    <a class="dsm-link" href="#">Read More &rarr;</a>
+                </div>
+                <div class="dsm">
+                    <div class="dsm-name">A8-<span class="a8">Fin</span></div>
+                    <div class="dsm-desc">Finance-focused DSM for tasks such as tabular analysis, portfolio management,
+                        and compliance.</div>
+                    <div class="dsm-metrics">
+                        <div class="metric">
+                            <div class="big">90+% accuracy</div>
+                            <div class="cap">versus ~60% of competing models in our proprietary benchmarks.</div>
+                        </div>
+                        <div class="metric">
+                            <div class="big">3.5X cheaper</div>
+                            <div class="cap">optimized deployment footprint vs. best open source models.</div>
+                        </div>
+                    </div>
+                    <a class="dsm-link" href="#">Read More &rarr;</a>
+                </div>
+            </div>
+            <p class="dsm-note">These represent only a sample of the many DSMs built from the ground up — core IP
+                designed for the world's most complex industries.</p>
+        </div>
+    </section>
+
+    <!-- MARKETPLACE -->
+    <section class="section tint">
+        <div class="wrap market">
+            <div class="sec-eyebrow" style="text-align:center;">Marketplace Availability</div>
+            <h2 class="sec-title" style="margin:0 auto; text-align:center;">Deploy Articul8 where you already build</h2>
+            <p class="sec-lead" style="margin:18px auto 0;">You can now find Articul8 on the world's leading
+                marketplaces — making it easier than ever to deploy, integrate, and scale our platform directly within
+                your enterprise environment.</p>
+            <div class="chips">
+                <span class="chip">AWS</span>
+                <span class="chip">Microsoft</span>
+                <span class="chip">Google Cloud Platform</span>
+                <span class="chip">Databricks</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CEO FEATURE -->
+    <section class="section">
+        <div class="wrap">
+            <div class="feature">
+                <div class="media">
+                    <div class="play"></div>
+                </div>
+                <div>
+                    <div class="sec-eyebrow">Voices in the Valley &middot; CNBC-TV18</div>
+                    <h2>From Jet Engines to GenAI: Articul8 CEO on Engineering the Future</h2>
+                    <p>Articul8 CEO Arun Subramaniyan sits down with Shereen Bhan to share how his journey from
+                        aerospace engineering to scaling AI at AWS laid the groundwork for building a next-generation
+                        enterprise GenAI platform.</p>
+                    <p>Arun explains how domain-specific GenAI, physics-informed models, and autonomous orchestration
+                        are reshaping how regulated industries like energy, manufacturing, and aerospace solve complex
+                        challenges at scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="section tint" id="news">
+        <div class="wrap">
+            <div class="sec-head">
+                <div class="sec-eyebrow">In the News</div>
+                <h2 class="sec-title">Discover the latest from Articul8</h2>
+                <p class="sec-lead">Company updates, expert perspectives, and client testimonials.</p>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-thumb"></div>
+                    <div class="news-body">
+                        <h3>An "agent of agents" for industrial applications</h3>
+                        <p>At the heart of Articul8's technology is ModelMesh, which goes beyond typical model
+                            orchestration frameworks to create what the company describes as "an agent of agents" for
+                            industrial applications.</p>
+                        <a class="dsm-link" href="#">Read More &rarr;</a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-thumb"></div>
+                    <div class="news-body">
+                        <h3>Why GenAI Projects Fail — and What It Takes to Rethink Enterprise Data Architecture</h3>
+                        <p>Only 5% of GenAI projects succeed in production. This blog breaks down where the real
+                            bottlenecks are — and how Autonomous Data Perception can unlock real-time ROI at scale.</p>
+                        <a class="dsm-link" href="#">Read More &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section" id="cta">
+        <div class="wrap">
+            <div class="final">
+                <h2>Stop Falling Behind.<br>Start <span class="lime">Articul8'ing</span>.</h2>
+                <p>From data chaos to trusted, hyper-personalized GenAI outcomes — purpose-built for your data and
+                    mission.</p>
+                <a class="btn-solid" href="#">Get Started with Articul8</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div>
+                    <a class="brand" href="#">Articul<span class="eight">8</span></a>
+                    <p style="max-width:280px; color:var(--body); font-size:14px; margin-top:14px;">Transforming
+                        enterprise data and expertise into powerful engines of growth, value and lasting impact.</p>
+                </div>
+                <div class="footer-cols">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="#">Platform</a>
+                        <a href="#">Case Studies</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">Blog</a>
+                        <a href="#">News</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">EULA</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span class="muted">&copy; 2026 Articul8, Inc. All rights reserved.</span>
+                <div class="social">
+                    <a href="#">X</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
