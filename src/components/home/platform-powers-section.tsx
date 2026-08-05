@@ -1,6 +1,7 @@
 import { getHomePage } from "@/app/services/home-api.service";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { SectionAnimator } from "./section-animator";
 
 function richTextToString(
   blocks: {
@@ -33,28 +34,31 @@ export async function PlatformPowersSection() {
   return (
     <section className="bg-surface/95 py-[88px]" id="platform-powers">
       <Container>
-        <SectionHeading
-          eyebrow={header?.SubTitle ?? ""}
-          title={header?.Title ?? ""}
-          description={header?.Description ? richTextToString(header.Description) : ""}
-        />
+        <SectionAnimator animation="stack">
+          <SectionHeading
+            eyebrow={header?.SubTitle ?? ""}
+            title={header?.Title ?? ""}
+            description={header?.Description ? richTextToString(header.Description) : ""}
+          />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {platformCapability.TextCard.map((card) => (
-            <div
-              key={card.id}
-              className="rounded-2xl border border-line bg-white p-8"
-            >
-              <h3 className="mb-4 font-display text-3xl font-bold text-brand">
-                {card.Title}
-              </h3>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {platformCapability.TextCard.map((card) => (
+              <div
+                key={card.id}
+                className="rounded-2xl border border-line bg-white p-8"
+                data-gsap-item
+              >
+                <h3 className="mb-4 font-display text-3xl font-bold text-brand">
+                  {card.Title}
+                </h3>
 
-              <p className="text-muted">
-                {richTextToString(card.Description)}
-              </p>
-            </div>
-          ))}
-        </div>
+                <p className="text-muted">
+                  {richTextToString(card.Description)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </SectionAnimator>
       </Container>
     </section>
   );

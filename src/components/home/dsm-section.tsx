@@ -1,6 +1,8 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getHomePage } from "@/app/services/home-api.service";
+import { SectionAnimator } from "./section-animator";
+import { getDsmSection } from "@/app/services/dsm.service";
+
 function richTextToString(
   blocks: {
     children?: {
@@ -15,62 +17,74 @@ function richTextToString(
 }
 
 export async function DsmSection() {
-  const { data } = await getHomePage();
-
-  const dsmSection = data.Section.find(
-    (section) => section.__component === "section-dsm.section-dsm"
-  );
-
+  const dsmSection = await getDsmSection();
+  console.log("DSM Section component response:", dsmSection);
+  console.log("DSM Section component DimondCards:", dsmSection.DimondCards.DimondCard.TextCard); // Log the entire response for debugging
   if (!dsmSection) {
     return null;
   }
+
   return (
     <section className="py-[88px]">
       <Container>
-        <div className="mb-12">
-          <SectionHeading
-            eyebrow={dsmSection.SectionHeader?.SubTitle ?? ""}
-            title={dsmSection.SectionHeader?.Title ?? ""}
-            description={richTextToString(
-              dsmSection.SectionHeader?.Description
-            )}
-          />
+        <SectionAnimator animation="stack">
+          <div className="mb-12">
+            <SectionHeading
+              eyebrow={dsmSection.SectionHeader.SubTitle}
+              title={dsmSection.SectionHeader.Title}
+              description={richTextToString(
+                dsmSection.SectionHeader.Description
+              )}
+            />
+          </div>
 
-        </div>
+          <div className="grid gap-5 lg:grid-cols-2">
+            {dsmSection.DimondCards.DimondCard
+              .map((card) => (
+                <article
+                  key={card.id}
+                  className="flex flex-col gap-4 rounded-[16px] border border-line bg-white p-7"
+                >
+                  <h3 className="font-display text-[24px] font-bold text-foreground">
+                    {card.Title}
+                  </h3>
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          {/* {data.cards.map((card) => (
-            <article
-              key={card.name}
-              className="flex flex-col gap-4 rounded-[16px] border border-line bg-white p-7"
-            >
-              <h3 className="font-display text-[24px] font-bold text-foreground">{card.name}</h3>
-              <p className="text-[15px] text-muted">{card.description}</p>
+                  <p className="text-[15px] text-muted">
+                    {richTextToString(card.Description)}
+                  </p>
 
-              <div className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
-                {card.metrics.map((metric) => (
-                  <div key={metric.value}>
-                    <div className="font-display text-[22px] font-bold leading-tight text-brand">
-                      {metric.value}
-                    </div>
-                    <div className="mt-1 text-[12.5px] text-muted">{metric.caption}</div>
+                  <div className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
+                    {card.TextCard
+                      .map((stat) => (
+                        <div key={stat.id}>
+                          <div className="font-display text-[22px] font-bold leading-tight text-brand">
+                            {stat.Title}
+                          </div>
+
+                          <div className="mt-1 text-[12.5px] text-muted">
+                            {stat.Description}
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                ))}
-              </div>
 
-              <a
-                className="font-display text-[14px] font-semibold text-brand hover:text-accent"
-                href="#cta"
-              >
-                Read More <span aria-hidden="true">-&gt;</span>
-              </a>
-            </article>
-          ))} */}
-        </div>
+                  <a
+                    href={card.CtaLink}
+                    className="font-display text-[14px] font-semibold text-brand hover:text-accent"
+                  >
+                    ReadMor <span aria-hidden="true">-&gt;</span>
+                  </a>
+                </article>
+              ))}
+          </div>
 
-        {/* <p className="mx-auto mt-9 max-w-3xl text-center text-[15px] text-muted">
-          {data.note}
-        </p> */}
+          <p
+            className="mx-auto mt-9 max-w-3xl text-center text-[15px] text-muted"
+            data-gsap-item
+          >
+            {dsmSection.FooterText}
+          </p>
+        </SectionAnimator>
       </Container>
     </section>
   );

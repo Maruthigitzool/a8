@@ -16,6 +16,7 @@ export async function getNews() {
     return response.data.map((item) => ({
         documentId: item.documentId,
         title: item.Title,
+        url: item.Url,
         excerpt: richTextToString(item.Excerpt),
     }));
 }

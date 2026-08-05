@@ -26,6 +26,7 @@ export interface HomeSectionApi {
     Title?: string;
     Description?: string;
     Button?: HomeButtonApi;
+    VideoUrl?: string;
 }
 
 export interface HomeApiData {

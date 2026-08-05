@@ -9,6 +9,7 @@ type ButtonProps = {
   className?: string;
   target?: string;
   rel?: string;
+  dataGsap?: string;
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -25,6 +26,7 @@ export function Button({
   className = "",
   target,
   rel,
+  dataGsap,
 }: ButtonProps) {
   return (
     <a
@@ -32,6 +34,8 @@ export function Button({
       href={href}
       target={target}
       rel={rel}
+      data-gsap={dataGsap}
+      data-gsap-item={dataGsap ?? undefined}
     >
       {children}
     </a>

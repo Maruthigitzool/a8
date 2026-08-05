@@ -1,6 +1,7 @@
 import { getHomePage } from "@/app/services/home-api.service";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { SectionAnimator } from "./section-animator";
 
 function richTextToString(
   blocks: {
@@ -12,7 +13,7 @@ function richTextToString(
   return blocks
     .flatMap((block) => block.children ?? [])
     .map((child) => child.text ?? "")
-    .join("\n\n\n");
+    .join("\n\n");
 }
 
 export async function CeoFeatureSection() {
@@ -30,22 +31,32 @@ export async function CeoFeatureSection() {
   return (
     <section className="py-[88px]">
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Video Placeholder */}
-          <div className="aspect-video rounded-3xl bg-slate-900" />
+        <SectionAnimator animation="split">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            {/* YouTube Video */}
+            <div className="overflow-hidden rounded-3xl shadow-lg" data-gsap-media>
+              <iframe
+                className="aspect-video w-full"
+                src={spotlightSection.VideoUrl}
+                title="Articul8 Demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
 
-          {/* Content */}
-          <div>
-            <SectionHeading
-              eyebrow={spotlightSection.SectionHeader?.SubTitle ?? ""}
-              title={spotlightSection.SectionHeader?.Title ?? ""}
-              description={richTextToString(
-                spotlightSection.SectionHeader?.Description
-              )}
-              align="left"
-            />
+            {/* Content */}
+            <div data-gsap-content>
+              <SectionHeading
+                eyebrow={spotlightSection.SectionHeader?.SubTitle ?? ""}
+                title={spotlightSection.SectionHeader?.Title ?? ""}
+                description={richTextToString(
+                  spotlightSection.SectionHeader?.Description
+                )}
+                align="left"
+              />
+            </div>
           </div>
-        </div>
+        </SectionAnimator>
       </Container>
     </section>
   );

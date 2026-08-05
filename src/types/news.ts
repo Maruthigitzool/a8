@@ -11,6 +11,7 @@ export interface A8NewsApiItem {
     updatedAt: string;
     publishedAt: string;
     Title: string;
+    Url: string;
     Excerpt: RichTextNode[];
 }
 
