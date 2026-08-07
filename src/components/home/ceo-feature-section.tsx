@@ -38,9 +38,11 @@ export async function CeoFeatureSection() {
               <iframe
                 className="aspect-video w-full"
                 src={spotlightSection.VideoUrl}
-                title="Articul8 Demo"
+                title={spotlightSection.SectionHeader?.Title ?? "Articul8 product demo video"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
 

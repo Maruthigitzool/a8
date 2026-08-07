@@ -14,10 +14,7 @@ export interface SectionHeader {
 export interface MarketplaceProduct {
     id: number;
     documentId: string;
-    Name: string;
-    Slug: string;
-    Url: string;
-    Logo: string;
+    Title: string;
 }
 
 export interface MarketplaceSection {

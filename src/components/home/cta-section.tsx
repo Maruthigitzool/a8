@@ -17,8 +17,12 @@ export async function CtaSection() {
       <Container>
         <SectionAnimator animation="panel">
           <div className="rounded-[24px] bg-foreground px-5 py-16 text-center text-white sm:px-10 sm:py-18" data-gsap-panel>
+            {/* Title contains CMS-authored HTML (e.g. accent-coloured spans).
+                Source is trusted Strapi content — not user input. The aria-label
+                provides a clean plain-text alternative for screen readers. */}
             <div
               className="font-display max-w-[580px] mx-auto text-[clamp(30px,4vw,52px)] font-bold leading-[1.05] tracking-tight [&_.text-accent]:text-accent"
+              aria-label={(cta.Title ?? "").replace(/<[^>]*>/g, "")}
               dangerouslySetInnerHTML={{
                 __html: cta.Title ?? "",
               }}

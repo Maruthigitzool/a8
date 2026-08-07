@@ -4,6 +4,25 @@ export interface RichTextNode {
     text?: string;
 }
 
+export interface TextCard {
+    id: number;
+    Title: string;
+    Description: RichTextNode[];
+}
+
+export interface DimondCard {
+    id: number;
+    Title: string;
+    Description: RichTextNode[];
+    ButtonUrl: string | null;
+    TextCard: TextCard[];
+}
+
+export interface DimondCards {
+    id: number;
+    DimondCard: DimondCard[];
+}
+
 export interface SectionHeader {
     id: number;
     SubTitle: string;
@@ -11,23 +30,10 @@ export interface SectionHeader {
     Description: RichTextNode[];
 }
 
-export interface DsmCard {
-    id: number;
-    Title: string;
-    Description: RichTextNode[];
-    Card: DsmStatistic[];
-}
-
-export interface DsmStatistic {
-    id: number;
-    Title: string;
-    Description: string;
-}
-
 export interface DsmSection {
     id: number;
     __component: "section-dsm.section-dsm";
     FooterText: string;
     SectionHeader: SectionHeader;
-    DimondCards: DsmCard[];
+    DimondCards: DimondCards;
 }

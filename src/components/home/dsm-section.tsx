@@ -18,8 +18,7 @@ function richTextToString(
 
 export async function DsmSection() {
   const dsmSection = await getDsmSection();
-  console.log("DSM Section component response:", dsmSection);
-  console.log("DSM Section component DimondCards:", dsmSection.DimondCards.DimondCard.TextCard); // Log the entire response for debugging
+
   if (!dsmSection) {
     return null;
   }
@@ -27,7 +26,7 @@ export async function DsmSection() {
   return (
     <section className="py-[88px]">
       <Container>
-        <SectionAnimator animation="stack">
+        <SectionAnimator animation="dsm">
           <div className="mb-12">
             <SectionHeading
               eyebrow={dsmSection.SectionHeader.SubTitle}
@@ -39,43 +38,46 @@ export async function DsmSection() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-2">
-            {dsmSection.DimondCards.DimondCard
-              .map((card) => (
-                <article
-                  key={card.id}
-                  className="flex flex-col gap-4 rounded-[16px] border border-line bg-white p-7"
-                >
-                  <h3 className="font-display text-[24px] font-bold text-foreground">
-                    {card.Title}
-                  </h3>
+            {dsmSection.DimondCards.DimondCard.map((card) => (
+              <article
+                key={card.id}
+                className="flex flex-col gap-4 rounded-[16px] border border-line bg-white p-7"
+                data-gsap-dsm-card
+              >
 
-                  <p className="text-[15px] text-muted">
-                    {richTextToString(card.Description)}
-                  </p>
+                <div className="font-display text-[24px] font-bold text-foreground">
+                  {card.Title}
+                </div>
 
-                  <div className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
-                    {card.TextCard
-                      .map((stat) => (
-                        <div key={stat.id}>
-                          <div className="font-display text-[22px] font-bold leading-tight text-brand">
-                            {stat.Title}
-                          </div>
+                <p className="text-[15px] text-muted">
+                  {richTextToString(card.Description)}
+                </p>
 
-                          <div className="mt-1 text-[12.5px] text-muted">
-                            {stat.Description}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
+                <div className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
+                  {(card.TextCard ?? []).map((textCard) => (
+                    <div key={textCard.id}>
+                      <div className="font-display text-[22px] font-bold leading-tight text-brand">
+                        {textCard.Title}
+                      </div>
 
+                      <div className="mt-1 text-[12.5px] text-muted">
+                        {richTextToString(textCard.Description)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {card.ButtonUrl && (
                   <a
-                    href={card.CtaLink}
+                    href={card.ButtonUrl}
                     className="font-display text-[14px] font-semibold text-brand hover:text-accent"
+                    data-gsap-dsm-link
                   >
-                    ReadMor <span aria-hidden="true">-&gt;</span>
+                    Read More <span aria-hidden="true">→</span>
                   </a>
-                </article>
-              ))}
+                )}
+              </article>
+            ))}
           </div>
 
           <p

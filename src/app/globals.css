@@ -79,3 +79,48 @@ summary {
 .animate-marquee {
   animation: marquee 18s linear infinite;
 }
+
+/* FOUC Prevention for GSAP Animations */
+[data-gsap-hero-announcement],
+[data-gsap-hero-word],
+[data-gsap-hero-copy],
+[data-gsap-hero-trusted],
+[data-trusted-clients-label],
+[data-gsap-item],
+[data-gsap-part],
+[data-gsap-panel],
+[data-gsap-media],
+[data-gsap-content],
+[data-gsap-dsm-card],
+[data-gsap-dsm-link],
+[data-gsap="hero-button"] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Reduced-motion override: GSAP never runs, so ensure elements are visible */
+@media (prefers-reduced-motion: reduce) {
+  [data-gsap-hero-announcement],
+  [data-gsap-hero-word],
+  [data-gsap-hero-copy],
+  [data-gsap-hero-trusted],
+  [data-trusted-clients-label],
+  [data-gsap-item],
+  [data-gsap-part],
+  [data-gsap-panel],
+  [data-gsap-media],
+  [data-gsap-content],
+  [data-gsap-dsm-card],
+  [data-gsap-dsm-link],
+  [data-gsap="hero-button"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Focus visible indicator for keyboard users (WCAG 2.2 AA) */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 3px;
+}

@@ -3,7 +3,7 @@ import { getFooter } from "@/app/services/footer.service";
 import { Container } from "@/components/ui/container";
 import { richTextToString } from "@/app/utils/rich-text";
 
-const STRAPI_URL = "http://localhost:1337";
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 const currentYear = new Date().getFullYear();
 
 export async function SiteFooter() {
@@ -54,7 +54,6 @@ export async function SiteFooter() {
                 alt={logo.Logo.alternativeText ?? "Articul8"}
                 width={logo.Logo.width}
                 height={logo.Logo.height}
-                priority
                 unoptimized
                 className=""
               />
@@ -66,10 +65,10 @@ export async function SiteFooter() {
           </div>
 
           <div className="grid w-full grid-cols-2 gap-10 sm:grid-cols-3 lg:w-auto lg:flex lg:gap-20">
-            <div>
-              <h2 className="mb-4 text-xs text-[13px] font-bold uppercase tracking-[0.16em] text-muted">
+            <nav aria-label="Product">
+              <h3 className="mb-4 text-xs text-[13px] font-bold uppercase tracking-[0.16em] text-muted">
                 Product
-              </h2>
+              </h3>
 
               {productLinks.map((item) => (
                 <a
@@ -80,12 +79,12 @@ export async function SiteFooter() {
                   {item.Label}
                 </a>
               ))}
-            </div>
+            </nav>
 
-            <div>
-              <h2 className="mb-4 text-xs text-[13px] font-bold uppercase tracking-[0.16em] text-muted">
+            <nav aria-label="Company">
+              <h3 className="mb-4 text-xs text-[13px] font-bold uppercase tracking-[0.16em] text-muted">
                 Company
-              </h2>
+              </h3>
 
               {companyLinks.map((item) => (
                 <a
@@ -96,12 +95,12 @@ export async function SiteFooter() {
                   {item.Label}
                 </a>
               ))}
-            </div>
+            </nav>
 
-            <div className="col-span-2 sm:col-span-1">
-              <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-muted">
+            <nav aria-label="Legal" className="col-span-2 sm:col-span-1">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-muted">
                 Legal
-              </h2>
+              </h3>
 
               {legalLinks.map((item) => (
                 <a
@@ -112,7 +111,20 @@ export async function SiteFooter() {
                   {item.Label}
                 </a>
               ))}
-            </div>
+
+              {socialLinks?.SocialItem.map((item) => (
+              <a
+                key={item.id}
+                href={item.Url ?? "#"}
+                className="font-medium hover:text-brand"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${item.Label} (opens in new tab)`}
+              >
+                {item.Label}
+              </a>
+            ))}
+            </nav>
           </div>
         </div>
 
@@ -126,6 +138,8 @@ export async function SiteFooter() {
               <a
                 key={item.id}
                 href={item.Url ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-medium hover:text-brand"
               >
                 {item.Label}

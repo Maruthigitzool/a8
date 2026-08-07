@@ -1,30 +1,23 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { HeaderMotion } from "@/components/site/header-motion";
 import { getHeader } from "@/app/services/header.service";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL!;
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 
 export async function SiteHeader() {
   const { data } = await getHeader();
 
-  const logo = data.Section.find(
-    (item) => item.__component === "common.logo"
-  );
-  console.log("logo", logo)
-  console.log(`${STRAPI_URL}${logo?.Logo?.url}`);
-  const navigation = data.Section.find(
-    (item) => item.__component === "common.navigation"
-  );
-
-  const button = data.Section.find(
-    (item) => item.__component === "common.button"
-  );
+  const logo = data.Section.find((item) => item.__component === "common.logo");
+  const navigation = data.Section.find((item) => item.__component === "common.navigation");
+  const button = data.Section.find((item) => item.__component === "common.button");
 
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-white/82 backdrop-blur-xl">
       <Container className="flex items-center gap-8 py-4">
-        <a href="#top" aria-label="Articul8 home">
+        <Link href="/" aria-label="Articul8 home">
           {logo?.Logo && (
             <Image
               src={`${STRAPI_URL}${logo.Logo.url}`}
@@ -32,22 +25,29 @@ export async function SiteHeader() {
               width={logo.Logo.width}
               height={logo.Logo.height}
               priority
-              unoptimized
             />
           )}
-        </a>
+        </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navigation?.NavItem.map((item) => (
-            <a
-              key={item.id}
-              href={item.URL}
-              className="text-[15px] font-medium text-foreground/85 hover:text-brand"
-            >
-              {item.Label}
-            </a>
-          ))}
-        </nav>
+        <HeaderMotion>
+          <nav className="relative hidden items-center gap-7 lg:flex" aria-label="Main navigation" data-gsap-header-nav>
+            <div
+              className="pointer-events-none absolute bottom-0 h-[3px] rounded-full bg-brand"
+              data-gsap-header-indicator
+            />
+
+            {navigation?.NavItem.map((item) => (
+              <a
+                key={item.id}
+                href={item.URL}
+                className="relative text-[15px] font-medium text-foreground/85 transition duration-300"
+                data-gsap-nav-link
+              >
+                {item.Label}
+              </a>
+            ))}
+          </nav>
+        </HeaderMotion>
 
         <div className="ml-auto hidden lg:block">
           {button && (
@@ -58,7 +58,7 @@ export async function SiteHeader() {
         </div>
 
         <details className="group relative ml-auto lg:hidden">
-          <summary className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-xl border border-line bg-white">
+          <summary className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-xl border border-line bg-white" aria-label="Open navigation menu">
             <span className="sr-only">Open menu</span>
 
             <span className="flex flex-col gap-1.5">

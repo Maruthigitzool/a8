@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 type CardVariant = "default" | "icon";
@@ -7,7 +8,7 @@ type CardProps = {
     excerpt: string;
     index?: number;
     variant?: CardVariant;
-    icon?: React.ReactNode;
+    icon?: ReactNode;
     href?: string;
     linkText?: string;
 };
@@ -52,7 +53,7 @@ export function Card({
                         href={href}
                         className="mt-auto pt-6 inline-flex font-display text-[14px] font-semibold text-brand hover:text-accent"
                     >
-                        {linkText} →
+                        {linkText} <span aria-hidden="true">→</span>
                     </Link>
                 )}
             </div>
