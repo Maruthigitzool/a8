@@ -4,10 +4,9 @@ import type { Banner } from "@/types/banner";
 export async function getBanner(): Promise<Banner | null> {
     const { data } = await getHomePage();
 
-    const banner = data.Section.find(
-        (item): item is Banner =>
-            item.__component === "home-components.banner"
-    );
+    const found = data.Section.find((item) => item.__component === "home-components.banner");
 
-    return banner ?? null;
+    const banner = found ? (found as unknown as Banner) : null;
+
+    return banner;
 }
