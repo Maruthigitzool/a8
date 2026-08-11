@@ -112,18 +112,18 @@ export async function SiteFooter() {
                 </a>
               ))}
 
-              {socialLinks?.SocialItem.map((item) => (
-              <a
-                key={item.id}
-                href={item.Url ?? "#"}
-                className="font-medium hover:text-brand"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${item.Label} (opens in new tab)`}
-              >
-                {item.Label}
-              </a>
-            ))}
+              {(socialLinks?.SocialItem ?? []).map((item) => (
+                <a
+                  key={item.id}
+                  href={item.Url ?? "#"}
+                  className="font-medium hover:text-brand"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${item.Label} (opens in new tab)`}
+                >
+                  {item.Label}
+                </a>
+              ))}
             </nav>
           </div>
         </div>
@@ -134,7 +134,7 @@ export async function SiteFooter() {
           </p>
 
           <div className="flex flex-wrap sm:justify-center gap-6 ">
-            {socialLinks?.SocialItem.map((item) => (
+            {(socialLinks?.SocialItem ?? []).map((item) => (
               <a
                 key={item.id}
                 href={item.Url ?? "#"}

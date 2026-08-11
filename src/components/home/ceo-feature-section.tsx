@@ -54,7 +54,7 @@ export async function CeoFeatureSection() {
                 description={richTextToString(
                   spotlightSection.SectionHeader?.Description
                 )}
-                align="left"
+                className="text-left"
               />
             </div>
           </div>

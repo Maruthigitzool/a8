@@ -13,3 +13,10 @@ export interface Banner {
   Description: RichTextNode[];
   Button: Button;
 }
+
+export interface Hero {
+  announcement: string;
+  title: string;
+  description: string;
+  buttonText: string;
+}

@@ -12,11 +12,10 @@ export async function getMarketplaceSection(): Promise<MarketplaceSection | null
         "/home?populate[Section][on][section-marketplace.section-marketplace][populate][SectionHeader]=*&populate[Section][on][section-marketplace.section-marketplace][populate][MarketPlaceProduct][populate]=*"
     );
     console.log("marketservcie file resposne", response.data); // Log the entire response for debugging
-    return (
-        response.data.Section.find(
-            (section) =>
-                section.__component ===
-                "section-marketplace.section-marketplace"
-        ) ?? null
+
+    const found = response.data.Section.find(
+        (section) => (section as any).__component === "section-marketplace.section-marketplace"
     );
+
+    return found ? (found as unknown as MarketplaceSection) : null;
 }

@@ -17,8 +17,12 @@ export interface MarketplaceProduct {
     Title: string;
 }
 
+export interface MarketPlaceProduct {
+    Product: MarketplaceProduct[];
+}
+
 export interface MarketplaceSection {
     id: number;
     SectionHeader: SectionHeader;
-    MarketPlaceProduct: MarketplaceProduct[];
+    MarketPlaceProduct: MarketPlaceProduct;
 }

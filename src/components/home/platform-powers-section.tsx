@@ -29,7 +29,7 @@ export async function PlatformPowersSection() {
     return null;
   }
 
-  const header = platformCapability.SectionHeader?.[0];
+  const header = (platformCapability.SectionHeader as any)?.[0] ?? (platformCapability.SectionHeader as any);
 
   return (
     <section className="bg-surface/95 py-[88px]" id="platform-powers">
@@ -42,7 +42,7 @@ export async function PlatformPowersSection() {
           />
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {platformCapability.TextCard.map((card) => (
+            {(platformCapability as any).TextCard.map((card: any) => (
               <div
                 key={card.id}
                 className="rounded-2xl border border-line bg-white p-8"
