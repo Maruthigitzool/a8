@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { cn } from "@/app/lib/cn";
+
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
@@ -17,26 +19,17 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div
-      className={`${centered ? "mx-auto text-center" : ""} ${className}`.trim()}
+      className={cn(centered && "mx-auto text-center", className)}
       data-gsap="section-heading"
     >
-      <div
-        className="mb-4 font-display text-[13px] font-bold uppercase tracking-[0.16em] text-accent"
-        data-gsap-part="eyebrow"
-      >
+      <div className="type-eyebrow mb-4" data-gsap-part="eyebrow">
         {eyebrow}
       </div>
-      <h2
-        className="max-w-[880px] leading-[1.05] font-display text-[clamp(30px,3.6vw,46px)] font-bold tracking-tight text-foreground"
-        data-gsap-part="title"
-      >
+      <h2 className="type-heading" data-gsap-part="title">
         {title}
       </h2>
       {description ? (
-        <div
-          className="mt-4 max-w-[720px] text-[18px] text-muted"
-          data-gsap-part="description"
-        >
+        <div className="type-lede" data-gsap-part="description">
           {description}
         </div>
       ) : null}

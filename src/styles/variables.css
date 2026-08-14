@@ -1,0 +1,117 @@
+:root {
+  /* Color */
+  --ds-background: #ffffff;
+  --ds-foreground: #0c1024;
+  --ds-muted: #4a5468;
+  --ds-line: #e7e9f2;
+  --ds-surface: #f6f7fb;
+  --ds-brand: #2a27e6;
+  --ds-brand-deep: #1e1bb8;
+  --ds-accent: #f26a2c;
+  --ds-mint: #e4f7ee;
+  --ds-success: #6be3a6;
+  --ds-logo: #7a8399;
+  --ds-icon-soft: #ecebff;
+  --ds-white: #ffffff;
+
+  --ds-brand-soft: color-mix(in srgb, var(--ds-brand) 15%, transparent);
+  --ds-brand-ghost: color-mix(in srgb, var(--ds-brand) 10%, transparent);
+  --ds-surface-muted: color-mix(in srgb, var(--ds-surface) 95%, transparent);
+  --ds-header: color-mix(in srgb, var(--ds-white) 82%, transparent);
+  --ds-white-72: color-mix(in srgb, var(--ds-white) 72%, transparent);
+  --ds-white-80: color-mix(in srgb, var(--ds-white) 80%, transparent);
+  --ds-white-86: color-mix(in srgb, var(--ds-white) 86%, transparent);
+  --ds-foreground-85: color-mix(in srgb, var(--ds-foreground) 85%, transparent);
+
+  --ds-gradient-brand: linear-gradient(135deg, var(--ds-brand), var(--ds-brand-deep));
+  --ds-gradient-card-cool: linear-gradient(135deg, #c9d0f5, #e9ecfa);
+  --ds-gradient-card-warm: linear-gradient(135deg, #fad9c6, #fbede2);
+  --ds-gradient-shine: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0%),
+    rgb(255 255 255 / 10%),
+    rgb(255 255 255 / 0%)
+  );
+
+  /* Spacing */
+  --ds-space-section: 5.5rem;
+  --ds-space-section-lg: 6rem;
+  --ds-space-block: 3rem;
+  --ds-space-card: 1.75rem;
+  --ds-space-card-lg: 2rem;
+  --ds-container-max: 75rem;
+  --ds-container-pad: 1.5rem;
+  --ds-container-pad-md: 2rem;
+  --ds-container-pad-lg: 2.5rem;
+
+  /* Radius */
+  --ds-radius-sm: 0.375rem;
+  --ds-radius-md: 0.625rem;
+  --ds-radius-lg: 0.75rem;
+  --ds-radius-xl: 1rem;
+  --ds-radius-2xl: 1.5rem;
+  --ds-radius-button: 0.625rem;
+  --ds-radius-card: 1rem;
+  --ds-radius-panel: 1.5rem;
+
+  /* Shadow */
+  --ds-shadow-sm: 0 8px 24px rgb(42 39 230 / 8%);
+  --ds-shadow-md: 0 16px 30px rgb(12 16 36 / 6%);
+  --ds-shadow-lg: 0 24px 64px rgb(12 16 36 / 14%);
+  --ds-shadow-panel: 0 30px 60px rgb(42 39 230 / 18%);
+  --ds-shadow-button: 0 18px 48px rgb(50 48 160 / 14%);
+  --ds-shadow-button-outline: 0 16px 40px rgb(82 80 146 / 8%);
+  --ds-shadow-button-inverted: 0 18px 48px rgb(255 255 255 / 22%);
+  --ds-shadow-button-accent: 0 18px 48px rgb(217 88 31 / 18%);
+
+  /* Type */
+  --font-display-stack: var(--font-poppins), var(--font-inter), system-ui, sans-serif;
+  --font-body-stack: var(--font-inter), system-ui, sans-serif;
+  --ds-text-xs: 0.75rem;
+  --ds-text-sm: 0.8125rem;
+  --ds-text-body: 0.9375rem;
+  --ds-text-md: 1rem;
+  --ds-text-lg: 1.125rem;
+  --ds-text-xl: 1.1875rem;
+  --ds-text-hero: clamp(2.375rem, 6vw, 4.5rem);
+  --ds-text-hero-copy: clamp(1.125rem, 2vw, 1.5rem);
+  --ds-text-heading: clamp(1.875rem, 3.6vw, 2.875rem);
+  --ds-text-heading-lg: clamp(1.75rem, 3.4vw, 2.625rem);
+  --ds-text-display: clamp(1.875rem, 4vw, 3.25rem);
+  --ds-leading-tight: 1.05;
+  --ds-leading-body: 1.6;
+  --ds-tracking-eyebrow: 0.16em;
+  --ds-tracking-tight: -0.025em;
+
+  /* Layout */
+  --ds-logo-height: 2.0625rem;
+  --ds-header-height: 4.5625rem;
+  --ds-z-header: 50;
+  --ds-duration-fast: 150ms;
+  --ds-duration: 300ms;
+  --ds-hero-glow: color-mix(in srgb, var(--ds-brand) 18%, transparent);
+  --ds-hero-glow-warm: color-mix(in srgb, var(--ds-accent) 12%, transparent);
+  --ds-hero-grid: color-mix(in srgb, var(--ds-brand) 9%, transparent);
+}
+
+html[lang="hi"] {
+  --font-display-stack: var(--font-devanagari), var(--font-inter), system-ui, sans-serif;
+  --font-body-stack: var(--font-devanagari), var(--font-inter), system-ui, sans-serif;
+}
+
+html[lang="kn"] {
+  --font-display-stack: var(--font-kannada), var(--font-inter), system-ui, sans-serif;
+  --font-body-stack: var(--font-kannada), var(--font-inter), system-ui, sans-serif;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --ds-container-pad: var(--ds-container-pad-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --ds-container-pad: var(--ds-container-pad-lg);
+  }
+}

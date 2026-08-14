@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { cn } from "@/app/lib/cn";
+
 type ButtonVariant = "solid" | "outline" | "inverted" | "accent";
 
 type ButtonProps = {
@@ -7,16 +9,10 @@ type ButtonProps = {
   href: string;
   variant?: ButtonVariant;
   className?: string;
+  size?: "md" | "lg";
   target?: string;
   rel?: string;
   dataGsap?: string;
-};
-
-const variantClasses: Record<ButtonVariant, string> = {
-  solid: "border border-brand bg-brand text-white shadow-[0_18px_48px_rgba(50,48,160,0.14)]",
-  outline: "border border-brand bg-white text-brand shadow-[0_16px_40px_rgba(82,80,146,0.08)]",
-  inverted: "border border-white bg-white text-brand shadow-[0_18px_48px_rgba(255,255,255,0.22)]",
-  accent: "border border-transparent bg-accent text-white shadow-[0_18px_48px_rgba(217,88,31,0.18)]",
 };
 
 export function Button({
@@ -24,13 +20,20 @@ export function Button({
   href,
   variant = "solid",
   className = "",
+  size = "md",
   target,
   rel,
   dataGsap,
 }: ButtonProps) {
   return (
     <a
-      className={`group relative inline-flex items-center justify-center overflow-hidden rounded-[10px] px-5 py-[11px] text-[14px] font-semibold transition duration-300 will-change-transform ${variantClasses[variant]} ${className}`}
+      className={cn(
+        "btn",
+        `btn-${variant}`,
+        size === "lg" && "btn-lg",
+        "group",
+        className,
+      )}
       href={href}
       target={target}
       rel={rel}
@@ -38,7 +41,7 @@ export function Button({
       data-gsap={dataGsap}
       data-gsap-item={dataGsap ?? undefined}
     >
-      <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition duration-500 group-hover:opacity-100" />
+      <span className="btn-shine" />
       <span className="relative z-10">{children}</span>
     </a>
   );

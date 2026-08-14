@@ -1,13 +1,12 @@
 import { gsap } from "@/animations/gsap";
-import { signatureSoft } from "@/animations/easing";
+import { heroMotion, isFinePointer } from "@/animations/hero.motion";
 
 const HERO_ROOT = "[data-gsap-hero-root]";
 const HERO_WRAPPER = "[data-gsap-hero-wrapper]";
 const HERO_ANNOUNCEMENT = "[data-gsap-hero-announcement]";
 const HERO_ANNOUNCEMENT_SWEEP = "[data-gsap-hero-announcement-sweep]";
 const HERO_TITLE_WORD = "[data-gsap-hero-word]";
-const HERO_DESCRIPTION = "[data-gsap-hero-description]";
-const HERO_COPY_SEGMENT = "[data-gsap-hero-copy]";
+const HERO_COPY = "[data-gsap-hero-copy]";
 const HERO_CTA = "[data-gsap='hero-button']";
 const HERO_TRUSTED = "[data-gsap-hero-trusted]";
 const TRUSTED_LABEL = "[data-trusted-clients-label]";
@@ -18,193 +17,282 @@ export function createHeroTimeline(root: HTMLElement) {
     const announcement = root.querySelector<HTMLElement>(HERO_ANNOUNCEMENT);
     const announcementSweep = root.querySelector<HTMLElement>(HERO_ANNOUNCEMENT_SWEEP);
     const titleWords = root.querySelectorAll<HTMLElement>(HERO_TITLE_WORD);
-    const description = root.querySelector<HTMLElement>(HERO_DESCRIPTION);
-    const copySegments = root.querySelectorAll<HTMLElement>(HERO_COPY_SEGMENT);
+    const copySegments = root.querySelectorAll<HTMLElement>(HERO_COPY);
     const cta = root.querySelector<HTMLElement>(HERO_CTA);
     const trustedSection = root.querySelector<HTMLElement>(HERO_TRUSTED);
     const trustedLabel = root.querySelector<HTMLElement>(TRUSTED_LABEL);
+    const glow = root.querySelector<HTMLElement>('[data-hero-layer="glow"]');
+    const grid = root.querySelector<HTMLElement>('[data-hero-layer="grid"]');
+    const orbA = root.querySelector<HTMLElement>('[data-hero-layer="orb-a"]');
+    const orbB = root.querySelector<HTMLElement>('[data-hero-layer="orb-b"]');
+    const streak = root.querySelector<HTMLElement>('[data-hero-layer="streak"]');
 
-    if (!heroRoot || !heroWrapper || !announcement || !titleWords.length || !description || !cta) {
+    if (!heroRoot || !heroWrapper || !titleWords.length || !cta) {
         return null;
     }
 
     const timeline = gsap.timeline({
         defaults: {
-            duration: 0.85,
-            ease: "power3.out",
+            ease: heroMotion.ease.settle,
             overwrite: "auto",
         },
     });
-    timeline.set(heroWrapper, {
-        transformStyle: "preserve-3d",
-        willChange: "transform",
-    });
-    
-    // Initial states based on premium typographic animation requirements
-    timeline.set(titleWords, {
-        yPercent: 100,
+
+    const atmosphereLayers = [glow, grid, orbA, orbB, streak].filter(
+        (layer): layer is HTMLElement => Boolean(layer)
+    );
+
+    gsap.set(atmosphereLayers, {
         autoAlpha: 0,
-        clipPath: "inset(100% 0 0 0)",
-        filter: "blur(4px)", // slight blur
-        transformOrigin: "top center",
     });
-    timeline.set(copySegments, {
-        yPercent: 20,
-        autoAlpha: 0,
-        filter: "blur(8px)", // softer motion without scale
-        transformOrigin: "top center",
-    });
-    timeline.set(announcementSweep, { xPercent: -100, autoAlpha: 0.22 });
-    timeline.set(cta, { transformStyle: "preserve-3d", autoAlpha: 0, scale: 0.94 }); // scale 0.94 -> 1
-    
-    // Trusted section flowing motion setup
-    if (trustedSection) {
-        timeline.set(trustedSection, { 
-            autoAlpha: 0, 
-            x: 40, // Horizontal flow setup
-            clipPath: "inset(0 100% 0 0)"
+
+    if (announcement) {
+        gsap.set(announcement, {
+            clipPath: "inset(0 0 100% 0)",
+            y: 10,
+            autoAlpha: 1,
         });
+    }
+
+    gsap.set(titleWords, {
+        yPercent: 118,
+        force3D: true,
+    });
+
+    gsap.set(copySegments, {
+        yPercent: 110,
+        autoAlpha: 1,
+    });
+
+    gsap.set(cta, {
+        autoAlpha: 0,
+        y: 18,
+        rotateX: 12,
+        transformOrigin: "50% 100%",
+        transformPerspective: 700,
+    });
+
+    if (trustedSection) {
+        gsap.set(trustedSection, { autoAlpha: 0, y: 16 });
     }
 
     timeline.addLabel("hero.intro", 0);
 
-    // 1. Announcement banner (width expansion / mask reveal)
-    timeline.fromTo(
-        announcement,
-        {
-            autoAlpha: 0,
-            scaleX: 0.95,
-            clipPath: "inset(0 100% 0 0)",
-        },
+    timeline.to(
+        [glow, grid],
         {
             autoAlpha: 1,
-            scaleX: 1,
-            clipPath: "inset(0 0 0 0)",
-            duration: 0.9,
-            ease: "power2.out",
-            transformOrigin: "left center"
+            duration: 1.4,
+            ease: heroMotion.ease.soft,
+            stagger: 0.12,
         },
         "hero.intro"
     );
 
-    timeline.to(
-        announcementSweep,
-        {
-            xPercent: 110,
-            opacity: 0.08,
-            duration: 0.8,
-            ease: "power2.inOut",
-        },
-        "hero.intro+=0.2"
-    );
+    if (announcement) {
+        timeline.to(
+            announcement,
+            {
+                clipPath: "inset(0 0 0% 0)",
+                y: 0,
+                duration: heroMotion.duration.announcement,
+                ease: heroMotion.ease.reveal,
+            },
+            `hero.intro+=${heroMotion.intro.announcement}`
+        );
+    }
 
-    // 2. Headline premium typography mask reveal
+    if (announcementSweep) {
+        timeline.fromTo(
+            announcementSweep,
+            { xPercent: -120, autoAlpha: 0.18 },
+            {
+                xPercent: 120,
+                autoAlpha: 0,
+                duration: 1.1,
+                ease: heroMotion.ease.sweep,
+            },
+            "hero.intro+=0.18"
+        );
+    }
+
     timeline.to(
         titleWords,
         {
             yPercent: 0,
-            autoAlpha: 1,
-            clipPath: "inset(0% 0 0 0)",
-            filter: "blur(0px)",
-            duration: 0.95,
-            stagger: 0.08, // faster stagger
-            ease: "power3.out",
+            duration: heroMotion.duration.word,
+            stagger: heroMotion.stagger.word,
+            ease: heroMotion.ease.reveal,
         },
-        "hero.intro+=0.4"
+        `hero.intro+=${heroMotion.intro.title}`
     );
 
-    // 3. Subtitle softer motion
     if (copySegments.length) {
         timeline.to(
             copySegments,
             {
                 yPercent: 0,
-                autoAlpha: 1,
-                filter: "blur(0px)",
-                duration: 0.85,
-                stagger: 0.08,
-                ease: "power2.out",
+                duration: heroMotion.duration.copy,
+                stagger: heroMotion.stagger.copy,
+                ease: heroMotion.ease.settle,
             },
-            "hero.intro+=0.9"
+            `hero.intro+=${heroMotion.intro.copy}`
         );
     }
 
-    // 4. CTA scale + opacity entrance
     timeline.to(
         cta,
         {
             autoAlpha: 1,
-            scale: 1,
-            duration: 0.9,
-            ease: "back.out(1.2)", // smoother than elastic
+            y: 0,
+            rotateX: 0,
+            duration: heroMotion.duration.cta,
+            ease: heroMotion.ease.settle,
         },
-        "hero.intro+=1.2"
+        `hero.intro+=${heroMotion.intro.cta}`
     );
 
-    // 5. Trusted logos coordinated horizontal movement
-    if (trustedLabel && trustedSection) {
-        timeline.fromTo(
-            trustedLabel,
-            {
-                autoAlpha: 0,
-                x: -10,
-            },
+    const activatingLayers = [orbA, orbB, streak].filter(
+        (layer): layer is HTMLElement => Boolean(layer)
+    );
+
+    if (activatingLayers.length) {
+        timeline.to(
+            activatingLayers,
             {
                 autoAlpha: 1,
-                x: 0,
-                duration: 0.8,
-                ease: "power2.out",
+                duration: heroMotion.duration.atmosphere,
+                stagger: 0.16,
+                ease: heroMotion.ease.soft,
             },
-            "hero.intro+=1.4"
+            `hero.intro+=${heroMotion.intro.atmosphere}`
         );
+    }
 
+    if (trustedLabel) {
+        timeline.fromTo(
+            trustedLabel,
+            { autoAlpha: 0, y: 8 },
+            {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: heroMotion.ease.soft,
+            },
+            `hero.intro+=${heroMotion.intro.trusted}`
+        );
+    }
+
+    if (trustedSection) {
         timeline.to(
             trustedSection,
             {
-                x: 0,
                 autoAlpha: 1,
-                clipPath: "inset(0 0% 0 0)",
-                duration: 0.9,
-                ease: "power3.out",
+                y: 0,
+                duration: heroMotion.duration.trusted,
+                ease: heroMotion.ease.settle,
+            },
+            `hero.intro+=${heroMotion.intro.trusted + 0.08}`
+        );
+    }
+
+    if (orbA) {
+        timeline.to(
+            orbA,
+            {
+                x: 24,
+                y: -18,
+                duration: 18,
+                ease: "none",
+                repeat: -1,
+                yoyo: true,
+            },
+            "hero.intro+=1.4"
+        );
+    }
+
+    if (orbB) {
+        timeline.to(
+            orbB,
+            {
+                x: -20,
+                y: 14,
+                duration: 22,
+                ease: "none",
+                repeat: -1,
+                yoyo: true,
             },
             "hero.intro+=1.5"
         );
     }
 
-    createHeroScrollMotion(heroRoot, heroWrapper, trustedSection);
+    createHeroScrollMotion(heroRoot, {
+        wrapper: heroWrapper,
+        glow,
+        grid,
+        orbA,
+        orbB,
+        trustedSection,
+        title: root.querySelector<HTMLElement>("[data-gsap-hero-title]"),
+    });
 
     return timeline;
 }
 
 function createHeroScrollMotion(
     heroRoot: HTMLElement,
-    heroWrapper: HTMLElement,
-    trustedSection: HTMLElement | null
+    layers: {
+        wrapper: HTMLElement;
+        glow: HTMLElement | null;
+        grid: HTMLElement | null;
+        orbA: HTMLElement | null;
+        orbB: HTMLElement | null;
+        trustedSection: HTMLElement | null;
+        title: HTMLElement | null;
+    }
 ) {
-    const heroScrollTimeline = gsap.timeline({
+    const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: heroRoot,
             start: "top top",
             end: "bottom top",
-            scrub: 0.8,
+            scrub: 0.65,
             invalidateOnRefresh: true,
         },
     });
 
-    heroScrollTimeline.to(heroWrapper, {
-        yPercent: -4,
-        scale: 0.986,
-        transformOrigin: "center top",
-        ease: "none",
-    }, 0);
-
-    if (trustedSection) {
-        heroScrollTimeline.to(
-            trustedSection,
+    if (layers.title) {
+        timeline.to(
+            layers.title,
             {
-                yPercent: 2,
+                y: heroMotion.scroll.headingY,
+                autoAlpha: heroMotion.scroll.headingOpacity,
                 ease: "none",
             },
+            0
+        );
+    }
+
+    if (layers.glow) {
+        timeline.to(layers.glow, { y: heroMotion.scroll.glowY, ease: "none" }, 0);
+    }
+
+    if (layers.grid) {
+        timeline.to(layers.grid, { y: heroMotion.scroll.gridY, ease: "none" }, 0);
+    }
+
+    if (layers.orbA) {
+        timeline.to(layers.orbA, { y: heroMotion.scroll.orbAY, ease: "none" }, 0);
+    }
+
+    if (layers.orbB) {
+        timeline.to(layers.orbB, { y: heroMotion.scroll.orbBY, ease: "none" }, 0);
+    }
+
+    if (layers.trustedSection) {
+        timeline.to(
+            layers.trustedSection,
+            { y: heroMotion.scroll.trustedY, ease: "none" },
             0
         );
     }
@@ -212,115 +300,80 @@ function createHeroScrollMotion(
 
 export function initializeHeroPointerMotion(root: HTMLElement) {
     const heroRoot = root.querySelector<HTMLElement>(HERO_ROOT);
-    const heroWrapper = root.querySelector<HTMLElement>(HERO_WRAPPER);
+    const glow = root.querySelector<HTMLElement>('[data-hero-layer="glow"]');
+    const grid = root.querySelector<HTMLElement>('[data-hero-layer="grid"]');
+    const orbA = root.querySelector<HTMLElement>('[data-hero-layer="orb-a"]');
+    const orbB = root.querySelector<HTMLElement>('[data-hero-layer="orb-b"]');
+    const trustedSection = root.querySelector<HTMLElement>(HERO_TRUSTED);
     const cta = root.querySelector<HTMLElement>(HERO_CTA);
 
-    if (!heroRoot || !heroWrapper) {
-        return () => { };
+    if (!heroRoot || !isFinePointer()) {
+        return () => undefined;
     }
 
-    const maxTranslate = 12;
-    const maxRotation = 2.5;
-    const state = { x: 0, y: 0, rotationX: 0, rotationY: 0 };
-    let animationFrame = 0;
-
-    const setX = gsap.quickSetter(heroWrapper, "x", "px");
-    const setY = gsap.quickSetter(heroWrapper, "y", "px");
-    const setRotationX = gsap.quickSetter(heroWrapper, "rotationX", "deg");
-    const setRotationY = gsap.quickSetter(heroWrapper, "rotationY", "deg");
-
-    const updateTransform = () => {
-        setX(state.x);
-        setY(state.y);
-        setRotationX(state.rotationX);
-        setRotationY(state.rotationY);
-        animationFrame = 0;
-    };
+    const moveGlow = glow
+        ? gsap.quickTo(glow, "x", { duration: 1.1, ease: heroMotion.ease.soft })
+        : null;
+    const moveGrid = grid
+        ? gsap.quickTo(grid, "x", { duration: 1.4, ease: heroMotion.ease.soft })
+        : null;
+    const moveOrbA = orbA
+        ? gsap.quickTo(orbA, "x", { duration: 0.9, ease: heroMotion.ease.soft })
+        : null;
+    const moveOrbB = orbB
+        ? gsap.quickTo(orbB, "x", { duration: 1.3, ease: heroMotion.ease.soft })
+        : null;
+    const moveTrusted = trustedSection
+        ? gsap.quickTo(trustedSection, "x", {
+              duration: 1.2,
+              ease: heroMotion.ease.soft,
+          })
+        : null;
+    const moveCta = cta
+        ? gsap.quickTo(cta, "x", { duration: 0.45, ease: heroMotion.ease.soft })
+        : null;
+    const moveCtaY = cta
+        ? gsap.quickTo(cta, "y", { duration: 0.45, ease: heroMotion.ease.soft })
+        : null;
 
     const handlePointerMove = (event: PointerEvent) => {
         const bounds = heroRoot.getBoundingClientRect();
-        const offsetX = event.clientX - bounds.left - bounds.width / 2;
-        const offsetY = event.clientY - bounds.top - bounds.height / 2;
+        const nx = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const ny = (event.clientY - bounds.top) / bounds.height - 0.5;
 
-        state.x = gsap.utils.clamp(-maxTranslate, maxTranslate, (offsetX / bounds.width) * maxTranslate * 1.2);
-        state.y = gsap.utils.clamp(-maxTranslate, maxTranslate, (offsetY / bounds.height) * maxTranslate * 0.6);
-        state.rotationY = gsap.utils.clamp(-maxRotation, maxRotation, (offsetX / bounds.width) * maxRotation);
-        state.rotationX = gsap.utils.clamp(-maxRotation, maxRotation, (-offsetY / bounds.height) * maxRotation);
+        moveGlow?.(nx * heroMotion.pointer.glow);
+        moveGrid?.(nx * heroMotion.pointer.grid * -1);
+        moveOrbA?.(nx * heroMotion.pointer.orbA);
+        moveOrbB?.(nx * heroMotion.pointer.orbB * -1);
+        moveTrusted?.(nx * heroMotion.pointer.trusted);
+        moveCta?.(nx * 4);
+        moveCtaY?.(ny * 3);
 
-        if (!animationFrame) {
-            animationFrame = requestAnimationFrame(updateTransform);
+        if (glow) {
+            gsap.to(glow, {
+                y: ny * 14,
+                duration: 1.1,
+                ease: heroMotion.ease.soft,
+                overwrite: "auto",
+            });
         }
     };
 
     const resetPointer = () => {
-        gsap.to(state, {
-            x: 0,
-            y: 0,
-            rotationX: 0,
-            rotationY: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            onUpdate: updateTransform,
-        });
-    };
-
-    const pointerEnter = () => {
-        heroWrapper.style.willChange = "transform";
-    };
-
-    const pointerLeave = () => {
-        resetPointer();
-        heroWrapper.style.willChange = "auto";
+        moveGlow?.(0);
+        moveGrid?.(0);
+        moveOrbA?.(0);
+        moveOrbB?.(0);
+        moveTrusted?.(0);
+        moveCta?.(0);
+        moveCtaY?.(0);
     };
 
     heroRoot.addEventListener("pointermove", handlePointerMove);
-    heroRoot.addEventListener("pointerenter", pointerEnter);
-    heroRoot.addEventListener("pointerleave", pointerLeave);
-
-    if (cta) {
-        const handleButtonEnter = () => {
-            gsap.to(cta, {
-                scale: 1.02,
-                boxShadow: "0 24px 70px rgba(10, 12, 45, 0.12)",
-                duration: 0.32,
-                ease: "power3.out",
-            });
-        };
-
-        const handleButtonLeave = () => {
-            gsap.to(cta, {
-                scale: 1,
-                boxShadow: "0 0 0 rgba(0,0,0,0)",
-                duration: 0.28,
-                ease: "power3.out",
-            });
-        };
-
-        cta.addEventListener("pointerenter", handleButtonEnter);
-        cta.addEventListener("pointerleave", handleButtonLeave);
-        cta.addEventListener("focus", handleButtonEnter);
-        cta.addEventListener("blur", handleButtonLeave);
-
-        return () => {
-            heroRoot.removeEventListener("pointermove", handlePointerMove);
-            heroRoot.removeEventListener("pointerenter", pointerEnter);
-            heroRoot.removeEventListener("pointerleave", pointerLeave);
-            cta.removeEventListener("pointerenter", handleButtonEnter);
-            cta.removeEventListener("pointerleave", handleButtonLeave);
-            cta.removeEventListener("focus", handleButtonEnter);
-            cta.removeEventListener("blur", handleButtonLeave);
-            if (animationFrame) {
-                cancelAnimationFrame(animationFrame);
-            }
-        };
-    }
+    heroRoot.addEventListener("pointerleave", resetPointer);
 
     return () => {
         heroRoot.removeEventListener("pointermove", handlePointerMove);
-        heroRoot.removeEventListener("pointerenter", pointerEnter);
-        heroRoot.removeEventListener("pointerleave", pointerLeave);
-        if (animationFrame) {
-            cancelAnimationFrame(animationFrame);
-        }
+        heroRoot.removeEventListener("pointerleave", resetPointer);
     };
 }

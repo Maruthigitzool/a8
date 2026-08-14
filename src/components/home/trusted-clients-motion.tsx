@@ -14,7 +14,7 @@ function renderClient(
     variant: "mobile-primary" | "desktop-primary"
 ) {
     const itemClassName =
-        "shrink-0 whitespace-nowrap font-display text-[20px] font-bold text-[#7a8399] opacity-70 will-change-transform transform-gpu";
+        "trusted-name will-change-transform transform-gpu";
 
     if (client.clone) {
         return (
@@ -56,9 +56,9 @@ export function TrustedClientsMotion({ clients }: TrustedClientsMotionProps) {
 
     return (
         <div ref={scopeRef} className="mt-12" data-gsap-hero-trusted>
-            <div className="mx-auto w-full max-w-[1200px] px-6">
+            <div className="page-container">
                 <p
-                    className="mb-7 text-center font-display text-[13px] font-semibold uppercase tracking-[0.16em] text-muted"
+                    className="type-eyebrow mb-7 text-center font-semibold text-muted"
                     data-trusted-clients-label
                 >
                     Trusted by Industry Leaders

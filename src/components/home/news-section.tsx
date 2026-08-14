@@ -1,29 +1,39 @@
-import { getNews } from "@/app/services/news.service";
 import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
-
-import { getHomePage } from "@/app/services/home-api.service";
 import { Card } from "./card";
 import { SectionAnimator } from "./section-animator";
-export async function NewsSection() {
-  const news = await getNews();
-  const { data } = await getHomePage();
+import type { HomeSectionApi } from "@/types/home-api";
 
-  const newsSection = data.Section.find(
-    (section) => section.__component === "section-news.section-news"
-  );
+type NewsItem = {
+  documentId: string;
+  title: string;
+  url: string;
+  excerpt: string;
+};
+
+type NewsSectionProps = {
+  newsSection: HomeSectionApi | null;
+  news: NewsItem[];
+};
+
+export function NewsSection({ newsSection, news }: NewsSectionProps) {
   if (!newsSection) {
     return null;
   }
+
   return (
-    <section className="bg-surface/95 py-[88px]" id="news">
+    <Section tone="muted" id="news">
       <Container>
         <SectionAnimator animation="stack">
-          <div className="mb-12">
+          <div className="mb-block">
             <SectionHeading
               eyebrow={newsSection.SectionHeader?.SubTitle ?? ""}
               title={newsSection.SectionHeader?.Title ?? ""}
-              description={newsSection.SectionHeader?.Description?.[0]?.children?.[0]?.text ?? ""}
+              description={
+                newsSection.SectionHeader?.Description?.[0]?.children?.[0]
+                  ?.text ?? ""
+              }
             />
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
@@ -39,6 +49,6 @@ export async function NewsSection() {
           </div>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }

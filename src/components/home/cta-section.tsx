@@ -1,27 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { getHomePage } from "@/app/services/home-api.service";
+import { Section } from "@/components/ui/section";
 import { SectionAnimator } from "./section-animator";
 
-export async function CtaSection() {
-  const { data } = await getHomePage();
+type CtaSectionProps = {
+  cta: {
+    Title?: string;
+    Description?: string;
+    Button?: {
+      ButtonText?: string;
+      ButtonUrl?: string;
+    };
+  } | null;
+};
 
-  const cta = data.Section.find(
-    (item) => item.__component === "common.cta"
-  );
-
+export function CtaSection({ cta }: CtaSectionProps) {
   if (!cta) return null;
 
   return (
-    <section className="bg-white py-[88px]" id="cta">
+    <Section tone="white" id="cta">
       <Container>
         <SectionAnimator animation="panel">
-          <div className="rounded-[24px] bg-foreground px-5 py-16 text-center text-white sm:px-10 sm:py-18" data-gsap-panel>
-            {/* Title contains CMS-authored HTML (e.g. accent-coloured spans).
-                Source is trusted Strapi content — not user input. The aria-label
-                provides a clean plain-text alternative for screen readers. */}
+          <div className="panel panel-dark" data-gsap-panel>
             <div
-              className="font-display max-w-[580px] mx-auto text-[clamp(30px,4vw,52px)] font-bold leading-[1.05] tracking-tight [&_.text-accent]:text-accent"
+              className="type-display [&_.text-accent]:text-accent"
               aria-label={(cta.Title ?? "").replace(/<[^>]*>/g, "")}
               dangerouslySetInnerHTML={{
                 __html: cta.Title ?? "",
@@ -29,7 +31,7 @@ export async function CtaSection() {
               data-gsap-item
             />
 
-            <p className="mx-auto mt-4  text-[18px] text-white/72" data-gsap-item>
+            <p className="mx-auto mt-4 text-lg text-white/72" data-gsap-item>
               {cta.Description}
             </p>
 
@@ -37,7 +39,7 @@ export async function CtaSection() {
               <Button
                 href={cta.Button?.ButtonUrl ?? "#"}
                 variant="accent"
-                className="rounded-xl px-[34px] py-4 text-[17px] font-semibold transition-colors duration-150"
+                size="lg"
                 dataGsap="cta-button"
               >
                 {cta.Button?.ButtonText}
@@ -46,6 +48,6 @@ export async function CtaSection() {
           </div>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }

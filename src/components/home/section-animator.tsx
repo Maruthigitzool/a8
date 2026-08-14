@@ -1,6 +1,6 @@
 "use client";
 
-import { useGsapAnimation } from "@/hooks/use-gsap-animation";
+import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
 type SectionAnimation = "hero" | "stack" | "panel" | "split" | "list" | "dsm";
@@ -12,17 +12,27 @@ type SectionAnimatorProps = {
   scrollStart?: string;
 };
 
+const SectionAnimatorClient = dynamic(
+  () =>
+    import("./section-animator-client").then(
+      (mod) => mod.SectionAnimatorClient,
+    ),
+  { ssr: false },
+);
+
 export function SectionAnimator({
   children,
   animation,
   className = "",
   scrollStart = "top 80%",
 }: SectionAnimatorProps) {
-  const { scopeRef } = useGsapAnimation({ animation, scrollStart });
-
   return (
-    <div ref={scopeRef} className={className}>
+    <SectionAnimatorClient
+      animation={animation}
+      className={className}
+      scrollStart={scrollStart}
+    >
       {children}
-    </div>
+    </SectionAnimatorClient>
   );
 }

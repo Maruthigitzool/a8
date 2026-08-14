@@ -4,59 +4,46 @@ import Link from "next/link";
 type CardVariant = "default" | "icon";
 
 type CardProps = {
-    title: string;
-    excerpt: string;
-    index?: number;
-    variant?: CardVariant;
-    icon?: ReactNode;
-    href?: string;
-    linkText?: string;
+  title: string;
+  excerpt: string;
+  index?: number;
+  variant?: CardVariant;
+  icon?: ReactNode;
+  href?: string;
+  linkText?: string;
 };
 
 export function Card({
-    title,
-    excerpt,
-    index = 0,
-    variant = "default",
-    icon,
-    href,
-    linkText = "Read More",
+  title,
+  excerpt,
+  index = 0,
+  variant = "default",
+  icon,
+  href,
+  linkText = "Read More",
 }: CardProps) {
-    return (
-        <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white" data-gsap-item>
-            {variant === "default" && (
-                <div
-                    className={`h-36 ${index % 2 === 0
-                        ? "bg-[linear-gradient(135deg,#c9d0f5,#e9ecfa)]"
-                        : "bg-[linear-gradient(135deg,#fad9c6,#fbede2)]"
-                        }`}
-                />
-            )}
+  return (
+    <article className="card" data-gsap-item>
+      {variant === "default" && (
+        <div
+          className={index % 2 === 0 ? "card-media-cool" : "card-media-warm"}
+        />
+      )}
 
-            <div className="flex flex-1 flex-col p-7">
-                {variant === "icon" && (
-                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[#ECEBFF]">
-                        {icon}
-                    </div>
-                )}
+      <div className="flex flex-1 flex-col p-card">
+        {variant === "icon" && icon ? (
+          <div className="card-icon">{icon}</div>
+        ) : null}
 
-                <h3 className="mb-2 font-display text-[19px] font-bold leading-tight text-foreground">
-                    {title}
-                </h3>
+        <h3 className="card-title">{title}</h3>
+        <p className="card-excerpt">{excerpt}</p>
 
-                <p className="text-[15px] text-muted">
-                    {excerpt}
-                </p>
-
-                {href && (
-                    <Link
-                        href={href}
-                        className="mt-auto pt-6 inline-flex font-display text-[14px] font-semibold text-brand hover:text-accent"
-                    >
-                        {linkText} <span aria-hidden="true">→</span>
-                    </Link>
-                )}
-            </div>
-        </article>
-    );
+        {href ? (
+          <Link href={href} className="link-brand mt-auto inline-flex pt-6">
+            {linkText} <span aria-hidden="true">→</span>
+          </Link>
+        ) : null}
+      </div>
+    </article>
+  );
 }

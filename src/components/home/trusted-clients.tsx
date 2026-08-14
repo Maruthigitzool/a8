@@ -1,22 +1,35 @@
-import { getClients } from "@/app/services/client.service";
-import type { HomeTrustedCompaniesData } from "@/types/home";
 import { TrustedClientsMotion } from "./trusted-clients-motion";
 
-type TrustedClientsProps = {
-    data?: HomeTrustedCompaniesData;
+type ClientItem = {
+  id: number;
+  documentId?: string;
+  Title: string;
+  Url?: string | null;
 };
 
-export async function TrustedClients(props: TrustedClientsProps) {
-    void props;
+type TrustedClientsProps = {
+  clients: ClientItem[];
+};
 
-    const { data } = await getClients();
+export function TrustedClients({ clients }: TrustedClientsProps) {
+  if (!clients.length) {
+    return null;
+  }
 
-    if (!data.length) return null;
+  const marqueeClients = [
+    ...clients.map((client) => ({
+      documentId: client.documentId ?? String(client.id),
+      Title: client.Title,
+      Url: client.Url ?? null,
+      clone: false as const,
+    })),
+    ...clients.map((client) => ({
+      documentId: client.documentId ?? String(client.id),
+      Title: client.Title,
+      Url: client.Url ?? null,
+      clone: true as const,
+    })),
+  ];
 
-    const clients = [
-        ...data.map((client) => ({ ...client, clone: false as const })),
-        ...data.map((client) => ({ ...client, clone: true as const })),
-    ];
-
-    return <TrustedClientsMotion clients={clients} />;
+  return <TrustedClientsMotion clients={marqueeClients} />;
 }

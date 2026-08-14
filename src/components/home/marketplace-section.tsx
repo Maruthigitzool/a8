@@ -1,14 +1,15 @@
 import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getMarketplaceSection } from "@/app/services/marketplace.service";
 import { SectionAnimator } from "./section-animator";
+import type { MarketplaceSection as MarketplaceSectionData } from "@/types/marketplace";
 
 function richTextToString(
   blocks: {
     children?: {
       text?: string;
     }[];
-  }[] = []
+  }[] = [],
 ) {
   return blocks
     .flatMap((block) => block.children ?? [])
@@ -16,38 +17,37 @@ function richTextToString(
     .join(" ");
 }
 
-export async function MarketplaceSection() {
-  const marketplaceSection = await getMarketplaceSection();
-  if (!marketplaceSection) {
+type MarketplaceSectionProps = {
+  section: MarketplaceSectionData | null;
+};
+
+export function MarketplaceSection({ section }: MarketplaceSectionProps) {
+  if (!section) {
     return null;
   }
 
   return (
-    <section className="bg-surface/95 py-[88px] text-center">
+    <Section tone="muted" className="text-center">
       <Container>
         <SectionAnimator animation="stack">
           <SectionHeading
-            eyebrow={marketplaceSection.SectionHeader.SubTitle}
-            title={marketplaceSection.SectionHeader.Title}
+            eyebrow={section.SectionHeader.SubTitle}
+            title={section.SectionHeader.Title}
             description={richTextToString(
-              marketplaceSection.SectionHeader.Description
+              section.SectionHeader.Description,
             )}
             className="flex flex-col items-center"
           />
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            {marketplaceSection.MarketPlaceProduct.Product.map((product) => (
-              <span
-                key={product.id}
-                className="rounded-xl border border-line bg-white px-7 py-4 font-display text-[16px] font-semibold text-foreground"
-                data-gsap-item
-              >
+            {(section.MarketPlaceProduct?.Product ?? []).map((product) => (
+              <span key={product.id} className="pill" data-gsap-item>
                 {product.Title}
               </span>
             ))}
           </div>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }

@@ -1,14 +1,15 @@
-import { getHomePage } from "@/app/services/home-api.service";
 import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SectionAnimator } from "./section-animator";
+import type { HomeSectionApi } from "@/types/home-api";
 
 function richTextToString(
   blocks: {
     children?: {
       text?: string;
     }[];
-  }[] = []
+  }[] = [],
 ) {
   return blocks
     .flatMap((block) => block.children ?? [])
@@ -16,36 +17,49 @@ function richTextToString(
     .join(" ");
 }
 
-export async function PlatformPowersSection() {
-  const { data } = await getHomePage();
+type PlatformPowersSectionProps = {
+  section: HomeSectionApi | null;
+};
 
-  const platformCapability = data.Section.find(
-    (section) =>
-      section.__component ===
-      "section-platform-capability.section-platform-capability"
-  );
-
-  if (!platformCapability) {
+export function PlatformPowersSection({ section }: PlatformPowersSectionProps) {
+  if (!section) {
     return null;
   }
 
-  const header = (platformCapability.SectionHeader as any)?.[0] ?? (platformCapability.SectionHeader as any);
+  const header =
+    (section.SectionHeader as { SubTitle?: string; Title?: string; Description?: { children?: { text?: string }[] }[] }[] | undefined)?.[0] ??
+    (section.SectionHeader as {
+      SubTitle?: string;
+      Title?: string;
+      Description?: { children?: { text?: string }[] }[];
+    });
+
+  const textCards =
+    (section as HomeSectionApi & {
+      TextCard?: Array<{
+        id: number;
+        Title: string;
+        Description: { children?: { text?: string }[] }[];
+      }>;
+    }).TextCard ?? [];
 
   return (
-    <section className="bg-surface/95 py-[88px]" id="platform-powers">
+    <Section tone="muted" id="platform-powers">
       <Container>
         <SectionAnimator animation="stack">
           <SectionHeading
             eyebrow={header?.SubTitle ?? ""}
             title={header?.Title ?? ""}
-            description={header?.Description ? richTextToString(header.Description) : ""}
+            description={
+              header?.Description ? richTextToString(header.Description) : ""
+            }
           />
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {(platformCapability as any).TextCard.map((card: any) => (
+          <div className="mt-block grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {textCards.map((card) => (
               <div
                 key={card.id}
-                className="rounded-2xl border border-line bg-white p-8"
+                className="card p-card-lg"
                 data-gsap-item
               >
                 <h3 className="mb-4 font-display text-3xl font-bold text-brand">
@@ -60,6 +74,6 @@ export async function PlatformPowersSection() {
           </div>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }

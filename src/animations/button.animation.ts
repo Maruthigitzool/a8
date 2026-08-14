@@ -1,13 +1,11 @@
 import { gsap } from "@/animations/gsap";
+import { isFinePointer } from "@/animations/hero.motion";
 
 const BUTTON_SELECTOR = "[data-gsap-button]";
-const MOTION_REDUCED =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function initializeButtonInteractions(root: HTMLElement) {
-    if (typeof window === "undefined" || MOTION_REDUCED) {
-        return () => { };
+    if (typeof window === "undefined" || !isFinePointer()) {
+        return () => undefined;
     }
 
     const buttons = Array.from(root.querySelectorAll<HTMLElement>(BUTTON_SELECTOR));
@@ -32,9 +30,9 @@ export function initializeButtonInteractions(root: HTMLElement) {
             const offsetX = Math.max(-1, Math.min(1, (event.clientX - bounds.left - bounds.width / 2) / (bounds.width / 2)));
             const offsetY = Math.max(-1, Math.min(1, (event.clientY - bounds.top - bounds.height / 2) / (bounds.height / 2)));
 
-            state.x = offsetX * 8;
-            state.y = offsetY * 5;
-            state.scale = 1.03; // upgraded from 1.02
+            state.x = offsetX * 3;
+            state.y = offsetY * 2;
+            state.scale = 1.015;
 
             if (!requestId) {
                 requestId = requestAnimationFrame(updateTransform);
@@ -77,7 +75,7 @@ export function initializeButtonInteractions(root: HTMLElement) {
 
         const releaseButton = () => {
             gsap.to(button, {
-                scale: 1.03, // upgraded from 1.02
+                scale: 1.015,
                 duration: 0.2,
                 ease: "power3.out",
             });
@@ -85,7 +83,7 @@ export function initializeButtonInteractions(root: HTMLElement) {
 
         const enterButton = () => {
             gsap.to(button, {
-                scale: 1.03, // upgraded from 1.02
+                scale: 1.015,
                 duration: 0.22,
                 ease: "power3.out",
             });

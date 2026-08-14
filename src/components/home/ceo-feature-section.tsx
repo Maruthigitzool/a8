@@ -1,14 +1,16 @@
-import { getHomePage } from "@/app/services/home-api.service";
 import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SectionAnimator } from "./section-animator";
+import { LazyYoutube } from "./lazy-youtube";
+import type { HomeSectionApi } from "@/types/home-api";
 
 function richTextToString(
   blocks: {
     children?: {
       text?: string;
     }[];
-  }[] = []
+  }[] = [],
 ) {
   return blocks
     .flatMap((block) => block.children ?? [])
@@ -16,43 +18,36 @@ function richTextToString(
     .join("\n\n");
 }
 
-export async function CeoFeatureSection() {
-  const { data } = await getHomePage();
+type CeoFeatureSectionProps = {
+  section: HomeSectionApi | null;
+};
 
-  const spotlightSection = data.Section.find(
-    (section) =>
-      section.__component === "section-spotlight.section-spotlight"
-  );
-
-  if (!spotlightSection) {
+export function CeoFeatureSection({ section }: CeoFeatureSectionProps) {
+  if (!section) {
     return null;
   }
 
   return (
-    <section className="py-[88px]">
+    <Section>
       <Container>
         <SectionAnimator animation="split">
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            {/* YouTube Video */}
             <div className="overflow-hidden rounded-3xl shadow-lg" data-gsap-media>
-              <iframe
-                className="aspect-video w-full"
-                src={spotlightSection.VideoUrl}
-                title={spotlightSection.SectionHeader?.Title ?? "Articul8 product demo video"}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
+              <LazyYoutube
+                src={section.VideoUrl ?? ""}
+                title={
+                  section.SectionHeader?.Title ??
+                  "Articul8 product demo video"
+                }
               />
             </div>
 
-            {/* Content */}
             <div data-gsap-content>
               <SectionHeading
-                eyebrow={spotlightSection.SectionHeader?.SubTitle ?? ""}
-                title={spotlightSection.SectionHeader?.Title ?? ""}
+                eyebrow={section.SectionHeader?.SubTitle ?? ""}
+                title={section.SectionHeader?.Title ?? ""}
                 description={richTextToString(
-                  spotlightSection.SectionHeader?.Description
+                  section.SectionHeader?.Description,
                 )}
                 className="text-left"
               />
@@ -60,6 +55,6 @@ export async function CeoFeatureSection() {
           </div>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }

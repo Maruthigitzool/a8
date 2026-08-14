@@ -1,0 +1,36 @@
+@theme inline {
+  --color-background: var(--ds-background);
+  --color-foreground: var(--ds-foreground);
+  --color-muted: var(--ds-muted);
+  --color-line: var(--ds-line);
+  --color-surface: var(--ds-surface);
+  --color-brand: var(--ds-brand);
+  --color-brand-deep: var(--ds-brand-deep);
+  --color-accent: var(--ds-accent);
+  --color-mint: var(--ds-mint);
+  --color-success: var(--ds-success);
+  --color-logo: var(--ds-logo);
+  --color-icon-soft: var(--ds-icon-soft);
+
+  --font-sans: var(--font-body-stack);
+  --font-display: var(--font-display-stack);
+
+  --spacing-section: var(--ds-space-section);
+  --spacing-section-lg: var(--ds-space-section-lg);
+  --spacing-block: var(--ds-space-block);
+  --spacing-card: var(--ds-space-card);
+  --spacing-card-lg: var(--ds-space-card-lg);
+
+  --radius-button: var(--ds-radius-button);
+  --radius-card: var(--ds-radius-card);
+  --radius-panel: var(--ds-radius-panel);
+
+  --shadow-soft: var(--ds-shadow-md);
+  --shadow-overlay: var(--ds-shadow-lg);
+  --shadow-panel: var(--ds-shadow-panel);
+  --shadow-button: var(--ds-shadow-button);
+  --shadow-button-outline: var(--ds-shadow-button-outline);
+  --shadow-button-inverted: var(--ds-shadow-button-inverted);
+  --shadow-button-accent: var(--ds-shadow-button-accent);
+  --shadow-brand-hover: var(--ds-shadow-sm);
+}

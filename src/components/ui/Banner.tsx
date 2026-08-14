@@ -1,65 +1,70 @@
 import { Button } from "@/components/ui/button";
 import { richTextToString } from "@/app/utils/rich-text";
-import { getBanner } from "@/app/services/banner.service";
+import type { Banner as BannerData } from "@/types/banner";
 
 function splitHeadlineWords(headline: string) {
-    return headline
-        .split(" ")
-        .filter(Boolean)
-        .map((word) => word.trim());
+  return headline.split(/\s+/).filter(Boolean);
 }
 
 function splitCopySegments(text: string) {
-    return text
-        .split(/(?<=[.!?])\s+/g)
-        .filter(Boolean)
-        .map((segment) => segment.trim());
+  return text
+    .split(/(?<=[.!?])\s+/g)
+    .filter(Boolean)
+    .map((segment) => segment.trim());
 }
 
-export async function Banner() {
-    const banner = await getBanner();
+type BannerProps = {
+  banner: BannerData | null;
+};
 
-    if (!banner) return null;
+export function Banner({ banner }: BannerProps) {
+  if (!banner) {
+    return null;
+  }
 
-    const titleWords = splitHeadlineWords(banner.Title);
-    const descriptionSegments = splitCopySegments(richTextToString(banner.Description));
+  const titleWords = splitHeadlineWords(banner.Title);
+  const descriptionSegments = splitCopySegments(
+    richTextToString(banner.Description),
+  );
 
-    return (
-        <>
-            <h1
-                className="mx-auto max-w-5xl font-display text-[clamp(2.375rem,6vw,4.5rem)] font-bold leading-[1.02] tracking-tight text-brand"
-                data-gsap-hero-title
-            >
-                {titleWords.map((word, index) => (
-                    <span
-                        key={`${word}-${index}`}
-                        className={`inline-flex overflow-hidden whitespace-nowrap ${index === titleWords.length - 1 ? "" : "mr-1"}`}
-                    >
-                        <span className="inline-block" data-gsap-hero-word>
-                            {word}
-                        </span>
-                    </span>
-                ))}
-            </h1>
+  return (
+    <>
+      <h1 className="type-hero" data-gsap-hero-title>
+        {titleWords.map((word, index) => (
+          <span className="hero-word-mask" key={`${word}-${index}`}>
+            <span className="hero-word" data-gsap-hero-word>
+              {word}
+            </span>
+          </span>
+        ))}
+      </h1>
 
-            <div className="mt-6 max-w-[640px] mx-auto mb-10 text-muted text-[clamp(18px,2vw,24px)]" data-gsap-hero-description>
-                {descriptionSegments.map((segment, index) => (
-                    <p key={`description-segment-${index}`} className={index > 0 ? "mt-4" : ""} data-gsap-hero-copy>
-                        {segment}
-                    </p>
-                ))}
-            </div>
+      <div
+        className="mx-auto mb-4 mt-6 max-w-[640px] text-[length:var(--ds-text-hero-copy)] text-muted lg:mb-10"
+        data-gsap-hero-description
+      >
+        {descriptionSegments.map((segment, index) => (
+          <p
+            key={`description-segment-${index}`}
+            className={`hero-copy-mask ${index > 0 ? "mt-4" : ""}`}
+          >
+            <span className="hero-copy" data-gsap-hero-copy>
+              {segment}
+            </span>
+          </p>
+        ))}
+      </div>
 
-            <div className="mt-10 inline-flex">
-                <Button
-                    href={banner.Button.ButtonUrl}
-                    variant="outline"
-                    className="text-brand font-semibold text-[17px] py-4 px-[34px]"
-                    dataGsap="hero-button"
-                >
-                    {banner.Button.ButtonText}
-                </Button>
-            </div>
-        </>
-    );
+      <div className="mt-10 inline-flex" data-gsap-hero-cta>
+        <Button
+          href={banner.Button.ButtonUrl}
+          variant="outline"
+          size="lg"
+          dataGsap="hero-button"
+        >
+          {banner.Button.ButtonText}
+        </Button>
+      </div>
+    </>
+  );
 }

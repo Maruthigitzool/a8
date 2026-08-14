@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
 
+import { cn } from "@/app/lib/cn";
+
 type ContainerProps = {
   children: ReactNode;
   className?: string;
 };
 
 export function Container({ children, className = "" }: ContainerProps) {
-  return (
-    <div className={`mx-auto w-full max-w-[1200px] px-6 sm:px-8 lg:px-10 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={cn("page-container", className)}>{children}</div>;
 }

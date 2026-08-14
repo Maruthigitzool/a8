@@ -47,7 +47,7 @@ export function HeaderMotion({ children }: HeaderMotionProps) {
                     moveIndicator(link);
                     gsap.to(link, {
                         y: -1,
-                        color: "#0c1024",
+                        color: "var(--ds-foreground)",
                         duration: 0.28,
                         ease: "power3.out",
                     });
@@ -56,7 +56,7 @@ export function HeaderMotion({ children }: HeaderMotionProps) {
                 const leave = () => {
                     gsap.to(link, {
                         y: 0,
-                        color: "#475569",
+                        color: "var(--ds-muted)",
                         duration: 0.28,
                         ease: "power3.out",
                     });

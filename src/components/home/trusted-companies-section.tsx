@@ -9,12 +9,12 @@ export function TrustedCompaniesSection({ data }: TrustedCompaniesSectionProps) 
   return (
     <section className="pb-5 pt-12 text-center">
       <Container>
-        <div className="mb-7 font-display text-[13px] font-semibold uppercase tracking-[0.16em] text-muted">
+        <div className="type-eyebrow mb-7 font-semibold text-muted">
           {data.eyebrow}
         </div>
         <div className="flex flex-wrap items-center justify-center gap-10 opacity-70">
           {data.companies.map((company) => (
-            <span key={company} className="font-display text-[20px] font-bold text-[#7a8399]">
+            <span key={company} className="trusted-name">
               {company}
             </span>
           ))}

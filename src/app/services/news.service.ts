@@ -1,22 +1,29 @@
+import { cache } from "react";
+
+import type { Locale } from "@/app/lib/locale";
 import type { A8NewsApiResponse } from "@/types/news";
 import { apiClient } from "../lib/api/http-client";
 
 const NEWS_ENDPOINT = "/a8-news";
 
-function richTextToString(excerpt: A8NewsApiResponse["data"][number]["Excerpt"]) {
-    return excerpt
-        .flatMap((block) => block.children ?? [])
-        .map((child) => child.text)
-        .join(" ");
+function richTextToString(
+  excerpt: A8NewsApiResponse["data"][number]["Excerpt"],
+) {
+  return excerpt
+    .flatMap((block) => block.children ?? [])
+    .map((child) => child.text)
+    .join(" ");
 }
 
-export async function getNews() {
-    const response = await apiClient.get<A8NewsApiResponse>(NEWS_ENDPOINT);
+export const getNews = cache(async (locale: Locale = "en") => {
+  const response = await apiClient.get<A8NewsApiResponse>(
+    `${NEWS_ENDPOINT}?locale=${locale}&populate=*`,
+  );
 
-    return response.data.map((item) => ({
-        documentId: item.documentId,
-        title: item.Title,
-        url: item.Url,
-        excerpt: richTextToString(item.Excerpt),
-    }));
-}
+  return (response.data ?? []).map((item) => ({
+    documentId: item.documentId,
+    title: item.Title,
+    url: item.Url,
+    excerpt: richTextToString(item.Excerpt),
+  }));
+});

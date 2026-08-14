@@ -1,36 +1,56 @@
-import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
+import type { Locale } from "@/app/lib/locale";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { HeaderMotion } from "@/components/site/header-motion";
+import { LanguageSwitcher } from "@/components/site/language-switcher";
+import { StrapiImage } from "@/components/ui/strapi-image";
 import { getHeader } from "@/app/services/header.service";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+type SiteHeaderProps = {
+  lang?: Locale;
+};
 
-export async function SiteHeader() {
-  const { data } = await getHeader();
+export async function SiteHeader({ lang = "en" }: SiteHeaderProps) {
+  const locale: Locale = lang;
+  const { data } = await getHeader(locale);
 
-  const logo = data.Section.find((item) => item.__component === "common.logo");
-  const navigation = data.Section.find((item) => item.__component === "common.navigation");
-  const button = data.Section.find((item) => item.__component === "common.button");
+  const logo = data.Section.find(
+    (item) => item.__component === "common.logo"
+  );
+
+  const navigation = data.Section.find(
+    (item) => item.__component === "common.navigation"
+  );
+
+  const button = data.Section.find(
+    (item) => item.__component === "common.button"
+  );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/80 bg-white/82 backdrop-blur-xl">
+    <header className="site-header">
       <Container className="flex items-center gap-8 py-4">
+
         <Link href="/" aria-label="Articul8 home">
           {logo?.Logo && (
-            <Image
-              src={`${STRAPI_URL}${logo.Logo.url}`}
+            <StrapiImage
+              src={logo.Logo.url}
               alt={logo.Logo.alternativeText ?? "Articul8"}
               width={logo.Logo.width}
               height={logo.Logo.height}
               priority
+              className="logo-mark"
             />
           )}
         </Link>
 
         <HeaderMotion>
-          <nav className="relative hidden items-center gap-7 lg:flex" aria-label="Main navigation" data-gsap-header-nav>
+          <nav
+            className="relative hidden items-center gap-7 lg:flex"
+            aria-label="Main navigation"
+            data-gsap-header-nav
+          >
             <div
               className="pointer-events-none absolute bottom-0 h-[3px] rounded-full bg-brand"
               data-gsap-header-indicator
@@ -40,7 +60,7 @@ export async function SiteHeader() {
               <a
                 key={item.id}
                 href={item.URL}
-                className="relative text-[15px] font-medium text-foreground/85 transition duration-300"
+                className="nav-link"
                 data-gsap-nav-link
               >
                 {item.Label}
@@ -49,7 +69,15 @@ export async function SiteHeader() {
           </nav>
         </HeaderMotion>
 
-        <div className="ml-auto hidden lg:block">
+        <div className="ml-auto hidden items-center gap-4 lg:flex">
+          <Suspense
+            fallback={
+              <div className="h-10 w-[8.5rem] animate-pulse rounded-xl bg-surface" />
+            }
+          >
+            <LanguageSwitcher value={locale} />
+          </Suspense>
+
           {button && (
             <Button href={button.ButtonUrl} variant="solid">
               {button.ButtonText}
@@ -58,7 +86,10 @@ export async function SiteHeader() {
         </div>
 
         <details className="group relative ml-auto lg:hidden">
-          <summary className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-xl border border-line bg-white" aria-label="Open navigation menu">
+          <summary
+            className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-xl border border-line bg-background"
+            aria-label="Open navigation menu"
+          >
             <span className="sr-only">Open menu</span>
 
             <span className="flex flex-col gap-1.5">
@@ -68,16 +99,25 @@ export async function SiteHeader() {
             </span>
           </summary>
 
-          <div className="absolute right-0 top-full mt-3 hidden w-[min(90vw,20rem)] gap-3 rounded-2xl border border-line bg-white p-4 shadow-[0_24px_64px_rgba(12,16,36,0.14)] group-open:grid">
+          <div className="absolute right-0 top-full mt-3 hidden w-[min(90vw,20rem)] gap-3 rounded-panel border border-line bg-background p-4 shadow-overlay group-open:grid">
+
             {navigation?.NavItem.map((item) => (
               <a
                 key={item.id}
                 href={item.URL}
-                className="rounded-xl px-3 py-2 text-[15px] font-semibold text-foreground hover:bg-surface"
+                className="rounded-xl px-3 py-2 type-body font-semibold text-foreground hover:bg-surface"
               >
                 {item.Label}
               </a>
             ))}
+
+            <Suspense
+              fallback={
+                <div className="h-10 w-full animate-pulse rounded-xl bg-surface" />
+              }
+            >
+              <LanguageSwitcher value={locale} />
+            </Suspense>
 
             {button && (
               <Button
@@ -88,8 +128,10 @@ export async function SiteHeader() {
                 {button.ButtonText}
               </Button>
             )}
+
           </div>
         </details>
+
       </Container>
     </header>
   );

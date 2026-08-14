@@ -1,14 +1,15 @@
 import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SectionAnimator } from "./section-animator";
-import { getDsmSection } from "@/app/services/dsm.service";
+import type { DsmSection as DsmSectionData } from "@/types/dsm";
 
 function richTextToString(
   blocks: {
     children?: {
       text?: string;
     }[];
-  }[] = []
+  }[] = [],
 ) {
   return blocks
     .flatMap((block) => block.children ?? [])
@@ -16,51 +17,53 @@ function richTextToString(
     .join(" ");
 }
 
-export async function DsmSection() {
-  const dsmSection = await getDsmSection();
+type DsmSectionProps = {
+  section: DsmSectionData | null;
+};
 
-  if (!dsmSection) {
+export function DsmSection({ section }: DsmSectionProps) {
+  if (!section) {
     return null;
   }
 
   return (
-    <section className="py-[88px]">
+    <Section>
       <Container>
         <SectionAnimator animation="dsm">
-          <div className="mb-12">
+          <div className="mb-block">
             <SectionHeading
-              eyebrow={dsmSection.SectionHeader.SubTitle}
-              title={dsmSection.SectionHeader.Title}
+              eyebrow={section.SectionHeader.SubTitle}
+              title={section.SectionHeader.Title}
               description={richTextToString(
-                dsmSection.SectionHeader.Description
+                section.SectionHeader.Description,
               )}
             />
           </div>
 
           <div className="grid gap-5 lg:grid-cols-2">
-            {dsmSection.DimondCards.DimondCard.map((card) => (
+            {(section.DimondCards?.DimondCard ?? []).map((card) => (
               <article
                 key={card.id}
-                className="flex flex-col gap-4 rounded-[16px] border border-line bg-white p-7"
+                className="card card-padded"
                 data-gsap-dsm-card
               >
+                <div
+                  className="font-display text-2xl font-bold text-foreground"
+                  dangerouslySetInnerHTML={{ __html: card.Title }}
+                />
 
-                <div className="font-display text-[24px] font-bold text-foreground">
-                  {card.Title}
-                </div>
-
-                <p className="text-[15px] text-muted">
+                <p className="type-body">
                   {richTextToString(card.Description)}
                 </p>
 
                 <div className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
                   {(card.TextCard ?? []).map((textCard) => (
                     <div key={textCard.id}>
-                      <div className="font-display text-[22px] font-bold leading-tight text-brand">
+                      <div className="font-display text-2xl font-bold leading-tight text-brand">
                         {textCard.Title}
                       </div>
 
-                      <div className="mt-1 text-[12.5px] text-muted">
+                      <div className="mt-1 text-xs text-muted">
                         {richTextToString(textCard.Description)}
                       </div>
                     </div>
@@ -70,7 +73,7 @@ export async function DsmSection() {
                 {card.ButtonUrl && (
                   <a
                     href={card.ButtonUrl}
-                    className="font-display text-[14px] font-semibold text-brand hover:text-accent"
+                    className="link-brand"
                     data-gsap-dsm-link
                   >
                     Read More <span aria-hidden="true">→</span>
@@ -81,13 +84,13 @@ export async function DsmSection() {
           </div>
 
           <p
-            className="mx-auto mt-9 max-w-3xl text-center text-[15px] text-muted"
+            className="type-body mx-auto mt-9 max-w-3xl text-center"
             data-gsap-item
           >
-            {dsmSection.FooterText}
+            {section.FooterText}
           </p>
         </SectionAnimator>
       </Container>
-    </section>
+    </Section>
   );
 }
