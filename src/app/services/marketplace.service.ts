@@ -17,9 +17,8 @@ export async function getMarketplaceSection(
 
   const found = response.data.Section.find(
     (section) =>
-      (section as { __component?: string }).__component ===
-      "section-marketplace.section-marketplace",
+      section.__component === "section-marketplace.section-marketplace",
   );
 
-  return found ? (found as unknown as MarketplaceSection) : null;
+  return found ?? null;
 }

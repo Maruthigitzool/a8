@@ -23,6 +23,7 @@ export interface MarketPlaceProduct {
 
 export interface MarketplaceSection {
     id: number;
+    __component?: "section-marketplace.section-marketplace";
     SectionHeader: SectionHeader;
     MarketPlaceProduct: MarketPlaceProduct;
 }
